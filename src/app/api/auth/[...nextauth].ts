@@ -25,14 +25,14 @@ export const authOptions = {
             return { ...user, token };
           }
         } catch (err: any) {
-          throw new Error("Invalid credentials");
+          throw new Error(err.message || "Invalid credentials");
         }
         return null;
       },
     }),
   ],
   session: {
-    strategy: "jwt", // use 'jwt' to persist backend token
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
