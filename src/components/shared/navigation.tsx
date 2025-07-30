@@ -10,6 +10,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { useSession } from "next-auth/react";
 
 const navLinks = [
   {
@@ -71,21 +72,27 @@ const navLinks = [
     title: "যোগাযোগ",
     path: "/contact",
   },
-  {
-    title: "প্রবেশ",
-    path: "/sign-in",
-  },
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useSession();
+  const user = data?.user;
+
+  // Conditionally add sign-in or dashboard link based on user session
+  const dynamicNavLinks = [
+    ...navLinks,
+    user
+      ? { title: "ড্যাশবোর্ড", path: "/dashboard" }
+      : { title: "প্রবেশ", path: "/sign-in" },
+  ];
 
   return (
     <nav className="bg-[#006A4E] shadow-lg">
       <div className="flex justify-between items-center h-auto sticky top-0 z-50">
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center justify-between w-full space-x-1">
-          {navLinks.map((link, index) => (
+        <div className="hidden lg:flex items-center justify-between w-full">
+          {dynamicNavLinks.map((link, index) => (
             <div key={index} className="relative group text-sm text-nowrap">
               {link.children ? (
                 <div className="relative">
@@ -141,7 +148,7 @@ export default function Navigation() {
 
               {/* Mobile Navigation */}
               <div className="py-4">
-                {navLinks.map((link, index) => (
+                {dynamicNavLinks.map((link, index) => (
                   <div key={index}>
                     {link.children ? (
                       <Collapsible>
