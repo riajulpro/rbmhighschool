@@ -1,5 +1,11 @@
+import ProfileCard from "@/components/shared/profile-card";
+
 const DashbaordPage = () => {
-  return <div>DashbaordPage</div>;
+  return (
+    <div>
+      <ProfileCard data={{}} />
+    </div>
+  );
 };
 
 export default DashbaordPage;

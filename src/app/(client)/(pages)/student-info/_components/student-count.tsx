@@ -1,7 +1,7 @@
 "use client";
 
 import { StudentCountData, SessionData } from "@/types/studentCounts";
-import StudentCountTable from "@/components/student-count-table";
+import StudentCountTable from "./student-count-table";
 
 const StudentCountPage = ({ counts }: { counts: StudentCountData }) => {
   return (

@@ -1,3 +1,6 @@
+import Image from "next/image";
+import headTeacherImg from "../../../../public/images/head_teacher.png";
+
 const PrincipalDetails = () => {
   return (
     <div className="rounded-sm shadow-sm overflow-hidden">
@@ -5,10 +8,14 @@ const PrincipalDetails = () => {
         প্রধান শিক্ষক
       </h2>
       <div className="flex flex-col items-center gap-1 p-2">
-        <div className="rounded-xl h-[320px] w-full bg-gray-50 overflow-hidden"></div>
+        <div className="rounded-xl h-96 w-full bg-gray-50 overflow-hidden">
+          <Image src={headTeacherImg} alt="Faruqul Islam Patwary" />
+        </div>
         <div className="text-center">
-          <h3 className="text-lg font-medium">Faruqul Islam</h3>
-          <p className="text-sm text-slate-700">designation & qualification</p>
+          <h3 className="text-lg font-medium">Faruqul Islam Patwary</h3>
+          <p className="text-center text-sm text-slate-800">
+            Rampur Bazar Majidia High Schools
+          </p>
         </div>
       </div>
     </div>
