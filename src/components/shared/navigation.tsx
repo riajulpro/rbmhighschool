@@ -19,7 +19,7 @@ const navLinks = [
   },
   {
     title: "আমাদের সম্পর্কে",
-    path: "/about-us",
+    path: "#",
     children: [
       { title: "প্রধান শিক্ষক এর তথ্য", path: "/about-us/head-teacher-info" },
       { title: "প্রতিষ্ঠানের ইতিহাস", path: "/about-us/institute-history" },
@@ -35,7 +35,7 @@ const navLinks = [
   },
   {
     title: "একাডেমিক তথ্য",
-    path: "/academic-info",
+    path: "#",
     children: [
       { title: "কক্ষ সংখ্যা", path: "/academic-info/room-count" },
       { title: "কম্পিউটার-ব্যবহার", path: "/academic-info/computer-usage" },
@@ -58,7 +58,7 @@ const navLinks = [
   },
   {
     title: "গ্যালারী",
-    path: "/gallery",
+    path: "#",
     children: [
       { title: "ছবি গ্যালারী", path: "/gallery/photo" },
       { title: "ভিডিও গ্যালারি", path: "/gallery/video" },

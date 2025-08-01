@@ -1,5 +1,11 @@
+import Title from "@/components/shared/title";
+
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div>
+      <Title text="রুটিন" />
+    </div>
+  );
 };
 
 export default page;

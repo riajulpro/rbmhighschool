@@ -1,11 +1,5 @@
-import ProfileCard from "@/components/shared/profile-card";
-
 const DashbaordPage = () => {
-  return (
-    <div>
-      <ProfileCard data={{}} />
-    </div>
-  );
+  return <div>Dashboard is under development!</div>;
 };
 
 export default DashbaordPage;

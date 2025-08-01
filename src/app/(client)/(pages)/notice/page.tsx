@@ -1,5 +1,11 @@
+import Title from "@/components/shared/title";
+
 const NoticesPage = () => {
-  return <div>NoticesPage</div>;
+  return (
+    <div>
+      <Title text="নোটিশ" />
+    </div>
+  );
 };
 
 export default NoticesPage;

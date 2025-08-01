@@ -1,5 +1,11 @@
+import Title from "@/components/shared/title";
+
 const StudentInfoPage = async () => {
-  return <div>student info page</div>;
+  return (
+    <div>
+      <Title text="শিক্ষার্থীর তথ্য" />
+    </div>
+  );
 };
 
 export default StudentInfoPage;

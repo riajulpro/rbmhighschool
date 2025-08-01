@@ -2,18 +2,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ITeacher } from "@/types/teacher";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 interface Props {
-  data: {
-    name?: string;
-    profileImg?: string;
-    email?: string;
-    phone?: string;
-    institution?: string;
-    specialization?: string[];
-    designation?: string;
-  };
+  data: ITeacher;
 }
 
 export default function ProfileCard({ data }: Props) {
@@ -40,7 +33,7 @@ export default function ProfileCard({ data }: Props) {
         {/* Teacher Info */}
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900">
-            {data?.name || "Sarah Johnson"}
+            {data?.userId.name || "Sarah Johnson"}
           </h2>
           <p className="text-lg text-blue-600 font-medium">
             {data?.designation || "Mathematics Teacher"}
@@ -87,7 +80,7 @@ export default function ProfileCard({ data }: Props) {
           <div className="space-y-2">
             <div className="flex items-center gap-3 text-sm text-gray-600">
               <Mail className="w-4 h-4 text-gray-400" />
-              <span>{data?.email || "sarah.johnson@school.edu"}</span>
+              <span>{data?.userId.email || "sarah.johnson@school.edu"}</span>
             </div>
             <div className="flex items-center gap-3 text-sm text-gray-600">
               <Phone className="w-4 h-4 text-gray-400" />
