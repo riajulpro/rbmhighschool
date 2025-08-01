@@ -1,4 +1,4 @@
-import Banner from "@/components/shared/home/banner";
+import BannerContainer from "@/components/shared/home/banner-container";
 import MainGridSection from "@/components/shared/home/main-grid-section";
 // import NoticeBoard from "@/components/shared/home/notice-board";
 import Notices from "@/components/shared/home/notices";
@@ -8,7 +8,7 @@ import ShortDetails from "@/components/shared/home/short-details";
 export default function Home() {
   return (
     <article>
-      <Banner />
+      <BannerContainer />
       {/* <NoticeBoard /> */}
       <section className="w-full flex flex-col md:flex-row md:space-x-3">
         <div className="w-full flex flex-col">
