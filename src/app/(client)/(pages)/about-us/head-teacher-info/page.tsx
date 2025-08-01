@@ -1,7 +1,6 @@
 import Image from "next/image";
 import headTeacherImg from "../../../../../../public/images/head_teacher.png";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { Separator } from "@radix-ui/react-separator";
 
 const page = async () => {
   const headTeacher = {

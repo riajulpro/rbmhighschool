@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/shared/data-table";
 import Title from "@/components/shared/title";
 
-export const rooms = [
+const rooms = [
   { serial: 1, name: "প্রধান শিক্ষকের কক্ষ", quantity: "১টি" },
   { serial: 2, name: "শিক্ষক মিলনায়তন কক্ষ", quantity: "" },
   { serial: 3, name: "অফিস রুম", quantity: "" },
@@ -20,7 +20,7 @@ export const rooms = [
   { serial: 16, name: "স্টোর রুম", quantity: "" },
 ];
 
-export type Room = {
+type Room = {
   serial: number;
   name: string;
   quantity: string;
