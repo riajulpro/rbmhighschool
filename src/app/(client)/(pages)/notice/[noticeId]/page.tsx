@@ -1,16 +1,13 @@
-import { NextPage } from "next"; // Import NextPage
 import PreviewPDF from "@/components/shared/pdf/preview";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
 import { INotice } from "@/types/notices";
 
-// Define the props interface
 interface Props {
   params: { noticeId: string };
 }
 
-// Use NextPage to type the component
-const NoticenoticeIdwithDetails: NextPage<Props> = async ({ params }) => {
+const NoticenoticeIdwithDetails = async ({ params }: Props) => {
   const { noticeId } = params;
 
   if (!noticeId) {
