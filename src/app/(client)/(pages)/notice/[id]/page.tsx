@@ -5,12 +5,24 @@ import { INotice } from "@/types/notices";
 
 interface Props {
   params: {
-    id: string;
+    id?: string;
   };
 }
 
 const NoticeIDwithDetails = async ({ params }: Props) => {
   const id = params.id;
+
+  if (!id) {
+    return (
+      <div>
+        <Title text="নোটিশ এর বিবরণ" />
+        <div className="text-center text-red-500 mt-4">
+          নোটিশ আইডি পাওয়া যায়নি।
+        </div>
+      </div>
+    );
+  }
+
   const { notice }: { notice: INotice } = await getData(`/api/notices/${id}`);
 
   return (
