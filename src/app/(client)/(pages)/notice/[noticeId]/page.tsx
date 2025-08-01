@@ -1,18 +1,19 @@
+import { NextPage } from "next"; // Import NextPage
 import PreviewPDF from "@/components/shared/pdf/preview";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
 import { INotice } from "@/types/notices";
 
+// Define the props interface
 interface Props {
-  params: {
-    id?: string;
-  };
+  params: { noticeId: string };
 }
 
-const NoticeIDwithDetails = async ({ params }: Props) => {
-  const id = params.id;
+// Use NextPage to type the component
+const NoticenoticeIdwithDetails: NextPage<Props> = async ({ params }) => {
+  const { noticeId } = params;
 
-  if (!id) {
+  if (!noticeId) {
     return (
       <div>
         <Title text="নোটিশ এর বিবরণ" />
@@ -23,12 +24,13 @@ const NoticeIDwithDetails = async ({ params }: Props) => {
     );
   }
 
-  const { notice }: { notice: INotice } = await getData(`/api/notices/${id}`);
+  const { notice }: { notice: INotice } = await getData(
+    `/api/notices/${noticeId}`
+  );
 
   return (
     <div>
       <Title text="নোটিশ এর বিবরণ" />
-
       <div>
         <h3 className="text-lg font-medium md:text-2xl border-b border-gray-300 mb-3 pb-3 text-center">
           {notice.title}
@@ -39,4 +41,4 @@ const NoticeIDwithDetails = async ({ params }: Props) => {
   );
 };
 
-export default NoticeIDwithDetails;
+export default NoticenoticeIdwithDetails;
