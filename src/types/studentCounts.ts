@@ -1,5 +1,5 @@
-// types/studentCounts.ts
 export type ClassGenderStats = {
+  class: string;
   male: number;
   female: number;
   total: number;

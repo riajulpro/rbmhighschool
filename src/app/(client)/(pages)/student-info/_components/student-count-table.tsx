@@ -1,4 +1,3 @@
-import React from "react";
 import { SessionData } from "@/types/studentCounts";
 
 type Props = {
