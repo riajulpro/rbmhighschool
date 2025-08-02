@@ -3,7 +3,7 @@ import brandImg from "../../../../public/images/brand_img.jpg";
 
 const ShortDetails = () => {
   return (
-    <div className="rounded-sm shadow-sm overflow-hidden my-2 md:mt-0">
+    <div className="rounded-sm shadow-sm overflow-hidden my-3 md:mt-0 md:mb-5">
       <h2 className="text-xl font-semibold bg-[#006A4E] text-center text-white py-1">
         রামপুর বাজার মজিদিয়া উচ্চ বিদ্যালয়
       </h2>

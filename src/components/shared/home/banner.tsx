@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Image from "next/image";
+import { detectImageSourceType } from "@/lib/detect-img-url";
 
 export default function Banner({ images }: { images: string[] }) {
   return (
@@ -31,7 +32,7 @@ export default function Banner({ images }: { images: string[] }) {
             className="bg-green-300 overflow-hidden h-full w-full"
           >
             <Image
-              src={image}
+              src={detectImageSourceType(image)}
               alt={`slide_${index}`}
               width={1000}
               height={500}
