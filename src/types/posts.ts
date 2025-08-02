@@ -1,5 +1,5 @@
 // Define the Post interface based on your schema
-export interface IPost {
+export interface IPostFront {
   _id: string;
   title: string;
   content: string;
@@ -10,7 +10,7 @@ export interface IPost {
 }
 
 // Extended interface for populated author data
-export interface IPostWithAuthor extends Omit<IPost, "authorId"> {
+export interface IPostWithAuthor extends Omit<IPostFront, "authorId"> {
   author?: {
     _id: string;
     name: string;

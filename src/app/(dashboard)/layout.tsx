@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }: Props) {
       <AppSidebar />
       <SidebarInset>
         <DashboardHeader />
-        <div>{children}</div>
+        <div className="px-5">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
