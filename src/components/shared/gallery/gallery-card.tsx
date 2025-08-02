@@ -41,14 +41,14 @@ export function GalleryCard({ item }: GalleryCardProps) {
   return (
     <>
       <Card
-        className="group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+        className="group cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] py-0"
         onClick={handleCardClick}
       >
         <CardContent className="p-0">
           <div className="relative aspect-video overflow-hidden">
             {item.type === "photo" ? (
               <Image
-                src={item.url || "/placeholder.svg"}
+                src={detectImageSourceType(item.url) || "/placeholder.svg"}
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
