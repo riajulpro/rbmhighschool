@@ -15,6 +15,7 @@ import {
   getVideoThumbnail,
   getYouTubeEmbedUrl,
 } from "@/lib/getYoutubeEmbededUrl";
+import { detectImageSourceType } from "@/lib/detect-img-url";
 
 interface IGallery {
   _id: string;
@@ -118,7 +119,7 @@ export function GalleryCard({ item }: GalleryCardProps) {
               {item.type === "photo" ? (
                 <div className="relative aspect-video max-h-[60vh] overflow-hidden rounded-lg">
                   <Image
-                    src={item.url || "/placeholder.svg"}
+                    src={detectImageSourceType(item.url) || "/placeholder.svg"}
                     alt={item.title}
                     fill
                     className="object-contain"
