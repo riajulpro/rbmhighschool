@@ -1,11 +1,11 @@
+import Link from "next/link";
+import React, { JSX } from "react";
 import {
   InstitutionInfo,
   PostAndGallery,
   StudentsInfo,
   TeacherInfo,
-} from "@/icons/grid-icons";
-import Link from "next/link";
-import React, { JSX } from "react";
+} from "src/icons/grid-icons";
 
 const MainGridSection = () => {
   const instituteInfoStructure = [

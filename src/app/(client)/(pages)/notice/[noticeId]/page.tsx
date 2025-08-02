@@ -1,13 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import PreviewPDF from "@/components/shared/pdf/preview";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
 import { INotice } from "@/types/notices";
 
-interface Props {
-  params: { noticeId: string };
-}
-
-const NoticenoticeIdwithDetails = async ({ params }: Props) => {
+const NoticenoticeIdwithDetails = async ({ params }: { params: any }) => {
   const { noticeId } = params;
 
   if (!noticeId) {

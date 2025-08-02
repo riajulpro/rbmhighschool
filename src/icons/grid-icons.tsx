@@ -6,9 +6,9 @@ export const PostAndGallery = () => {
       height="100%"
       fill="none"
       stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       viewBox="0 0 24 24"
     >
       <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -26,9 +26,9 @@ export function StudentsInfo() {
       height="100%"
       fill="none"
       stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       viewBox="0 0 24 24"
     >
       <path d="M4 10l8-4 8 4-8 4-8-4z" />
@@ -46,9 +46,9 @@ export function TeacherInfo() {
       height="100%"
       fill="none"
       stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       viewBox="0 0 24 24"
     >
       <circle cx="12" cy="7" r="3" />
@@ -66,9 +66,9 @@ export function InstitutionInfo() {
       height="100%"
       fill="none"
       stroke="currentColor"
-      stroke-width="1.8"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       viewBox="0 0 24 24"
     >
       <path d="M3 21h18M4 10h16v11H4z" />
