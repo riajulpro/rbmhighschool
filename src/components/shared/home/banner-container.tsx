@@ -4,7 +4,7 @@ import Banner from "./banner";
 const BannerContainer = async () => {
   const { photoUrls } = await getData("/api/gallery/slide-photos");
 
-  console.log({ photoUrls });
+  console.log(photoUrls);
 
   const slideElements = photoUrls || [
     "/images/slide/slide_1.jpg",

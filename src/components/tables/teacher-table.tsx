@@ -41,7 +41,7 @@ const columns: ColumnDef<ITeacher>[] = [
     },
   },
   {
-    accessorKey: "teacherName",
+    accessorKey: "userId",
     header: ({ column }) => {
       return (
         <Button
@@ -53,9 +53,10 @@ const columns: ColumnDef<ITeacher>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div className="font-medium text-base">{row.getValue("teacherName")}</div>
-    ),
+    cell: ({ row }) => {
+      const user = row.getValue("userId") as { name: string };
+      return <div className="font-medium text-base">{user?.name}</div>;
+    },
   },
   {
     accessorKey: "designation",

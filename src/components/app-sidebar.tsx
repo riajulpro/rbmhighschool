@@ -107,7 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         title: "Institution Info",
-        url: "/dashboard/institution",
+        url: "/dashboard/institution-info",
         icon: School,
       },
       {

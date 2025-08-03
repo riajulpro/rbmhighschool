@@ -32,6 +32,8 @@ const columns: ColumnDef<IGallery>[] = [
             <Image
               src={detectImageSourceType(url) || "/placeholder.svg"}
               alt={title}
+              width={200}
+              height={200}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -119,6 +121,8 @@ const columns: ColumnDef<IGallery>[] = [
                   <Image
                     src={detectImageSourceType(item.url) || "/placeholder.svg"}
                     alt={item.title}
+                    width={200}
+                    height={200}
                     className="max-h-96 w-auto rounded-md object-contain"
                   />
                 ) : (

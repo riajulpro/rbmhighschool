@@ -30,6 +30,8 @@ const columns: ColumnDef<IPost>[] = [
             <Image
               src={detectImageSourceType(coverImage) || "/placeholder.svg"}
               alt={title}
+              height={1000}
+              width={1000}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -124,6 +126,8 @@ const columns: ColumnDef<IPost>[] = [
                       detectImageSourceType(post.coverImage) ||
                       "/placeholder.svg"
                     }
+                    width={1000}
+                    height={1000}
                     alt={post.title}
                     className="max-h-64 w-auto rounded-md object-contain"
                   />
