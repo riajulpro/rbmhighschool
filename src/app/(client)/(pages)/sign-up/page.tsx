@@ -20,11 +20,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function SignInPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -41,6 +43,7 @@ export default function SignInPage() {
         name,
         email,
         password,
+        role,
       };
 
       const res = await axios.post(
@@ -48,11 +51,11 @@ export default function SignInPage() {
         data
       );
 
+      console.log(res);
+
       if (res.status === 200 || res.status === 201) {
-        toast.success(
-          res.data.data.message || "Account successfully registered!"
-        );
-        router.push("/login");
+        toast.success("Account successfully registered!");
+        router.push("/sign-in");
       }
     } catch (error: any) {
       setError(error.message || "An error occurred. Please try again.");
@@ -79,7 +82,30 @@ export default function SignInPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-
+            <div className="flex items-center gap-3 justify-center">
+              <Button
+                onClick={() => setRole("student")}
+                className={cn(
+                  "cursor-pointer",
+                  role === "student"
+                    ? "bg-[var(--primary-color)]"
+                    : "bg-gray-100 text-slate-700 hover:text-white"
+                )}
+              >
+                Student
+              </Button>
+              <Button
+                onClick={() => setRole("teacher")}
+                className={cn(
+                  "cursor-pointer",
+                  role === "teacher"
+                    ? "bg-[var(--primary-color)]"
+                    : "bg-gray-100 text-slate-700 hover:text-white"
+                )}
+              >
+                Teacher
+              </Button>
+            </div>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>

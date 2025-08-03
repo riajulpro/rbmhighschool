@@ -21,6 +21,7 @@ import {
   Building2,
   User2,
   ChevronUp,
+  LogOut,
 } from "lucide-react";
 
 import {
@@ -46,9 +47,24 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
+declare module "next-auth" {
+  interface Session {
+    user?: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      accessToken?: string;
+      role: string;
+    };
+  }
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: session } = useSession();
+  const role = session?.user?.role;
   const path = usePathname();
+
+  console.log({ myRole: role });
 
   const isCurrentPath = (url: string) => {
     if (url === path) {
@@ -143,9 +159,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ],
     navSecondary: [
       {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: Home,
+      },
+      {
+        title: "Blog Posts",
+        url: "/dashboard/posts",
+        icon: Newspaper,
+      },
+      {
+        title: "Results",
+        url: "/dashboard/results",
+        icon: ClipboardList,
+      },
+      {
+        title: "Class Routines",
+        url: "/dashboard/class-routines",
+        icon: CalendarDays,
       },
     ],
   };
@@ -172,40 +203,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Platform</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {data.navMain.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={isCurrentPath(item.url)}>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Tools</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {data.navSecondary.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {role === "admin" ||
+          (role === "principal" && (
+            <SidebarGroup>
+              <SidebarGroupLabel>Platform</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {data.navMain.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isCurrentPath(item.url)}
+                      >
+                        <Link href={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
+        {role === "teacher" && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Tools</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {data.navSecondary.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isCurrentPath(item.url)}
+                    >
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -237,6 +279,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuItem>
+                  <LogOut />
                   <button onClick={() => signOut()}>Sign Out</button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
