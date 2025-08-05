@@ -22,6 +22,8 @@ import {
   User2,
   ChevronUp,
   LogOut,
+  LayoutList,
+  Luggage,
 } from "lucide-react";
 
 import {
@@ -153,6 +155,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Users",
         url: "/dashboard/users",
         icon: UserCog,
+      },
+      {
+        title: "Vacancy",
+        url: "/dashboard/vacancies",
+        icon: LayoutList,
+      },
+      {
+        title: "Vacations",
+        url: "/dashboard/vacations",
+        icon: Luggage,
       },
     ],
     navSecondary: [

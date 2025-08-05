@@ -69,6 +69,18 @@ export interface IFacility extends BaseDocument {
   quantity: string;
 }
 
+export interface IVacancy extends BaseDocument {
+  serial: string;
+  name: string;
+  quantity: string;
+}
+
+export interface IVacation extends BaseDocument {
+  date: Date;
+  day: string;
+  reason: string;
+}
+
 export interface IGallery extends BaseDocument {
   title: string;
   type: "photo" | "video";

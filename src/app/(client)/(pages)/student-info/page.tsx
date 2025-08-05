@@ -9,6 +9,8 @@ const StudentInfoPage = async () => {
     "/api/students/stats"
   );
 
+  console.log(stats);
+
   return (
     <div>
       <Title text="শিক্ষার্থীর তথ্য" />
