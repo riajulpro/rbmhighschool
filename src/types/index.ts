@@ -118,8 +118,8 @@ export interface SubjectResult {
 }
 
 export interface IResult extends BaseDocument {
-  studentId: string; // Represents Types.ObjectId from Mongoose
-  studentName: string; // For display purposes in the client-side mock
+  studentId: string;
+  studentName: string;
   semester: "FirstSemester" | "MidTerm" | "Annual";
   year: number;
   subjects: SubjectResult[];

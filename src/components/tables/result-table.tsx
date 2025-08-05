@@ -18,7 +18,43 @@ import type { IResult, FormField } from "@/types/index";
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "@/lib/axios";
 
-const columns: ColumnDef<IResult>[] = [
+export type ResultType = {
+  _id: string;
+  student: {
+    _id: string;
+    studentName: string;
+    fatherName: string;
+    motherName: string;
+    class: string;
+    section: string;
+    session: string;
+    rollNumber: string;
+    gender: "male" | "female" | "other";
+    dob: string; // ISO date string
+    guardianName: string;
+    guardianPhone: string;
+    address: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+  semester: "First" | "Mid" | "Annual" | string;
+  year: number;
+  subjects: {
+    subject: string;
+    marks: number;
+    grade: string;
+    point: number;
+    _id: string;
+  }[];
+  gpa: number;
+  overallGrade: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+const columns: ColumnDef<ResultType>[] = [
   {
     accessorKey: "studentName",
     header: ({ column }) => (
@@ -31,8 +67,9 @@ const columns: ColumnDef<IResult>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const student: { studentName: string } = row.getValue("student");
-      return <div className="font-medium">{student.studentName}</div>;
+      return (
+        <div className="font-medium">{row.original.student.studentName}</div>
+      );
     },
   },
   {
@@ -95,6 +132,7 @@ const columns: ColumnDef<IResult>[] = [
     header: "Details",
     cell: ({ row }) => {
       const result = row.original;
+
       return (
         <Dialog>
           <DialogTrigger asChild>
@@ -102,15 +140,93 @@ const columns: ColumnDef<IResult>[] = [
               <Eye className="h-4 w-4" />
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl">
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Result Details for {result.studentName}</DialogTitle>
+              <DialogTitle>
+                Result Details for {result.student.studentName}
+              </DialogTitle>
               <DialogDescription>
                 {result.semester.replace(/([A-Z])/g, " $1").trim()} -{" "}
                 {result.year}
               </DialogDescription>
             </DialogHeader>
-            {/* Details content omitted for brevity */}
+
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">Student Information</h3>
+              <ul className="grid grid-cols-2 gap-4 text-sm">
+                <li>
+                  <strong>Student Name:</strong> {result.student.studentName}
+                </li>
+                <li>
+                  <strong>{`Father's Name:`}</strong>{" "}
+                  {result.student.fatherName}
+                </li>
+                <li>
+                  <strong>{`Mother's Name:`}</strong>{" "}
+                  {result.student.motherName}
+                </li>
+                <li>
+                  <strong>Class:</strong> {result.student.class}
+                </li>
+                <li>
+                  <strong>Section:</strong> {result.student.section}
+                </li>
+                <li>
+                  <strong>Session:</strong> {result.student.session}
+                </li>
+                <li>
+                  <strong>Roll No:</strong> {result.student.rollNumber}
+                </li>
+                <li>
+                  <strong>Gender:</strong> {result.student.gender}
+                </li>
+                <li>
+                  <strong>Date of Birth:</strong>{" "}
+                  {new Date(result.student.dob).toLocaleDateString()}
+                </li>
+                <li>
+                  <strong>Guardian:</strong> {result.student.guardianName}
+                </li>
+                <li>
+                  <strong>Guardian Phone:</strong>{" "}
+                  {result.student.guardianPhone}
+                </li>
+                <li>
+                  <strong>Address:</strong> {result.student.address}
+                </li>
+              </ul>
+
+              <h3 className="text-lg font-semibold pt-4">Subject Results</h3>
+              <table className="w-full text-sm border">
+                <thead>
+                  <tr className="bg-gray-100 text-left">
+                    <th className="border px-2 py-1">Subject</th>
+                    <th className="border px-2 py-1">Marks</th>
+                    <th className="border px-2 py-1">Grade</th>
+                    <th className="border px-2 py-1">Point</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.subjects.map((subject: any) => (
+                    <tr key={subject._id}>
+                      <td className="border px-2 py-1">{subject.subject}</td>
+                      <td className="border px-2 py-1">{subject.marks}</td>
+                      <td className="border px-2 py-1">{subject.grade}</td>
+                      <td className="border px-2 py-1">{subject.point}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="pt-4 text-sm">
+                <p>
+                  <strong>GPA:</strong> {result.gpa}
+                </p>
+                <p>
+                  <strong>Overall Grade:</strong> {result.overallGrade}
+                </p>
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
       );
@@ -134,7 +250,7 @@ function useResultFormFields() {
           setLoading(true);
 
           const { data } = await axiosInstance.get(
-            `https://rbmhighschool-server.onrender.com/api/students/select?session=${session}&class=${className}`
+            `/api/students/select?session=${session}&class=${className}`
           );
 
           const options = data.students.map((s: any) => ({
