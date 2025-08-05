@@ -1,83 +1,41 @@
 "use client";
 
-import { useState } from "react";
 import { StudentTable } from "@/components/tables/student-table";
+import axiosInstance from "@/lib/axios";
 import type { IStudent } from "@/types/index";
-
-// Mock data - replace with your actual API calls
-const mockStudents: IStudent[] = [
-  {
-    _id: "1",
-    studentName: "John Doe",
-    fatherName: "Robert Doe",
-    motherName: "Jane Doe",
-    class: "10",
-    section: "A",
-    session: "2024-25",
-    rollNumber: "001",
-    gender: "male",
-    dob: new Date("2008-05-15"),
-    guardianName: "Robert Doe",
-    guardianPhone: "+1234567890",
-    address: "123 Main St, City, State",
-    createdAt: new Date("2024-01-15"),
-    updatedAt: new Date("2024-01-15"),
-  },
-  {
-    _id: "2",
-    studentName: "Alice Smith",
-    fatherName: "David Smith",
-    motherName: "Sarah Smith",
-    class: "10",
-    section: "B",
-    session: "2024-25",
-    rollNumber: "002",
-    gender: "female",
-    dob: new Date("2008-08-22"),
-    guardianName: "David Smith",
-    guardianPhone: "+1234567891",
-    address: "456 Oak Ave, City, State",
-    createdAt: new Date("2024-01-10"),
-    updatedAt: new Date("2024-01-10"),
-  },
-];
+import { useRouter } from "next/navigation";
 
 export default function StudentsPage({
-  studentsData,
+  studentsData: students,
 }: {
   studentsData: IStudent[];
 }) {
-  const [students, setStudents] = useState<IStudent[]>(
-    studentsData || mockStudents
-  );
+  const router = useRouter();
 
   const handleAdd = async (
     student: Omit<IStudent, "_id" | "createdAt" | "updatedAt">
   ) => {
-    // Replace with your actual API call
-    const newStudent: IStudent = {
-      ...student,
-      _id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    setStudents((prev) => [...prev, newStudent]);
+    const res = await axiosInstance.post(`/api/students`, student);
+
+    if (res.status === 200 || res.status === 201) {
+      router.refresh();
+    }
   };
 
   const handleEdit = async (id: string, updatedStudent: Partial<IStudent>) => {
-    // Replace with your actual API call
-    setStudents((prev) =>
-      prev.map((student) =>
-        student._id === id
-          ? { ...student, ...updatedStudent, updatedAt: new Date() }
-          : student
-      )
-    );
+    const res = await axiosInstance.put(`/api/students/${id}`, updatedStudent);
+
+    if (res.status === 200) {
+      router.refresh();
+    }
   };
 
   const handleDelete = async (id: string) => {
-    // Replace with your actual API call
-    setStudents((prev) => prev.filter((student) => student._id !== id));
+    const res = await axiosInstance.delete(`/api/students/${id}`);
+
+    if (res.status === 200) {
+      router.refresh();
+    }
   };
 
   return (

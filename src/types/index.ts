@@ -185,4 +185,5 @@ export interface FormField {
   placeholder?: string;
   defaultValue?: (item: any) => any;
   subjectFields?: Omit<FormField, "subjectFields">[]; // New property for subject-list type
+  onChange?: (value: any) => void;
 }

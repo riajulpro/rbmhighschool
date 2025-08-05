@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 import AuthSessionProvider from "@/components/shared/session-provider";
 import { getServerSession } from "next-auth";
 import { Toaster } from "sonner";
 import { authOptions } from "@/lib/auth";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { Roboto } from "next/font/google";
+import { Hind_Siliguri } from "next/font/google";
+
+const roboto = Roboto({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  weight: ["400", "700"],
+  variable: "--font-hind-siliguri",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +37,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${roboto.variable} ${hindSiliguri.variable} antialiased`}
       >
         <AuthSessionProvider session={session}>{children}</AuthSessionProvider>
         <Toaster position="top-right" />

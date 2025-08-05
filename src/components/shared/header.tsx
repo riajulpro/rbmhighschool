@@ -14,7 +14,7 @@ const Header = async () => {
       <div className="flex items-center md:justify-between flex-col md:flex-row md:space-x-9 w-full">
         <div className=""></div>
         <div className="flex flex-col items-center gap-0.5">
-          <h3 className="text-lg md:text-2xl font-bold text-[#006A4E]">
+          <h3 className="text-lg md:text-2xl font-bold text-[#006A4E] font-hindSiliguri">
             {info.name}
           </h3>
           <p className="text-sm text-slate-700">{info.location}</p>

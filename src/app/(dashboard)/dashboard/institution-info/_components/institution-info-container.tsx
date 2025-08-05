@@ -1,78 +1,65 @@
 "use client";
 
-import { useState } from "react";
 import { InstitutionInfoTable } from "@/components/tables/institution-info-table";
 import type { IInstitutionInfo } from "@/types/index";
+import axiosInstance from "@/lib/axios";
+import { useRouter } from "next/navigation";
 
 // Mock data - typically, there would only be one record for institution info
-const mockInstitutionInfo: IInstitutionInfo[] = [
-  {
-    _id: "1",
-    name: "Example International School",
-    logo: "/placeholder.svg?height=96&width=96&text=EIS",
-    establishedYear: 1995,
-    location: "Dhaka",
-    contactEmail: "info@example.edu",
-    phone: "+8801234567890",
-    about:
-      "Example International School is dedicated to providing high-quality education and fostering holistic development in students. We believe in nurturing young minds to become global citizens.",
-    shortInfo: "Excellence in Education since 1995",
-    eiinNumber: "123456",
-    schoolCode: "EIS-BD",
-    fullAddress: "123 School Road, Gulshan-1, Dhaka 1212, Bangladesh",
-    createdAt: new Date("2020-01-01"),
-    updatedAt: new Date("2024-07-20"),
-  },
-];
+// const mockInstitutionInfo: IInstitutionInfo[] = [
+//   {
+//     _id: "1",
+//     name: "Example International School",
+//     logo: "/placeholder.svg?height=96&width=96&text=EIS",
+//     establishedYear: 1995,
+//     location: "Dhaka",
+//     contactEmail: "info@example.edu",
+//     phone: "+8801234567890",
+//     about:
+//       "Example International School is dedicated to providing high-quality education and fostering holistic development in students. We believe in nurturing young minds to become global citizens.",
+//     shortInfo: "Excellence in Education since 1995",
+//     eiinNumber: "123456",
+//     schoolCode: "EIS-BD",
+//     fullAddress: "123 School Road, Gulshan-1, Dhaka 1212, Bangladesh",
+//     createdAt: new Date("2020-01-01"),
+//     updatedAt: new Date("2024-07-20"),
+//   },
+// ];
 
 export default function InstitutionInfoPage({
-  institutionData,
+  institutionData: institutionInfo,
 }: {
   institutionData: IInstitutionInfo[];
 }) {
-  const [institutionInfo, setInstitutionInfo] = useState<IInstitutionInfo[]>(
-    institutionData || mockInstitutionInfo
-  );
+  const router = useRouter();
 
   const handleAdd = async (
     info: Omit<IInstitutionInfo, "_id" | "createdAt" | "updatedAt">
   ) => {
-    // In a real application, you'd likely prevent adding more than one record
-    // or handle it as an update if a record already exists.
-    if (institutionInfo.length > 0) {
-      console.warn(
-        "Institution info already exists. Consider updating instead of adding."
-      );
-      return;
+    const res = await axiosInstance.post(`/api/institution`, info);
+
+    if (res.status === 200 || res.status === 201) {
+      router.refresh();
     }
-    // Replace with your actual API call
-    const newInfo: IInstitutionInfo = {
-      ...info,
-      _id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    setInstitutionInfo((prev) => [...prev, newInfo]);
   };
 
   const handleEdit = async (
     id: string,
     updatedInfo: Partial<IInstitutionInfo>
   ) => {
-    // Replace with your actual API call
-    setInstitutionInfo((prev) =>
-      prev.map((info) =>
-        info._id === id
-          ? { ...info, ...updatedInfo, updatedAt: new Date() }
-          : info
-      )
-    );
+    const res = await axiosInstance.put(`/api/institution/${id}`, updatedInfo);
+
+    if (res.status === 200) {
+      router.refresh();
+    }
   };
 
   const handleDelete = async (id: string) => {
-    // In a real application, you might want to prevent deleting the only institution info record.
-    // Replace with your actual API call
-    setInstitutionInfo((prev) => prev.filter((info) => info._id !== id));
+    const res = await axiosInstance.delete(`/api/institution/${id}`);
+
+    if (res.status === 200) {
+      router.refresh();
+    }
   };
 
   return (

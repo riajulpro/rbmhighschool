@@ -64,8 +64,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const role = session?.user?.role;
   const path = usePathname();
 
-  console.log({ myRole: role });
-
   const isCurrentPath = (url: string) => {
     if (url === path) {
       return true;

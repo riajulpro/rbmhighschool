@@ -31,7 +31,17 @@ const navLinks = [
   },
   {
     title: "শিক্ষার্থীর তথ্য",
-    path: "/student-info",
+    path: "#",
+    children: [
+      {
+        title: "ছাত্রছাত্রী সংখ্যা",
+        path: "/student-info",
+      },
+      {
+        title: "শিক্ষার্থীর রেজাল্ট",
+        path: "/student-info/results",
+      },
+    ],
   },
   {
     title: "একাডেমিক তথ্য",
@@ -93,7 +103,7 @@ export default function Navigation() {
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center justify-between w-full">
           {dynamicNavLinks.map((link, index) => (
-            <div key={index} className="relative group text-sm text-nowrap">
+            <div key={index} className="relative group text-nowrap">
               {link.children ? (
                 <div className="relative">
                   <button className="flex items-center px-3 py-3 text-white hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-medium">

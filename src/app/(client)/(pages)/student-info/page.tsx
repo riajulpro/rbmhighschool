@@ -12,6 +12,7 @@ const StudentInfoPage = async () => {
   return (
     <div>
       <Title text="শিক্ষার্থীর তথ্য" />
+
       {stats.length > 0 ? (
         <StudentsInfoContainer stats={stats} />
       ) : (
