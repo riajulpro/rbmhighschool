@@ -8,10 +8,12 @@ export interface SubjectResult {
 
 export interface StudentInfo {
   _id: string;
-  name: string;
+  studentName: string;
   class: string;
   session: string;
   rollNumber: string;
+  motherName: string;
+  fatherName: string;
 }
 
 export interface ResultData {

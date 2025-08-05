@@ -15,7 +15,14 @@ export default function ResultsPage({
   const handleAdd = async (
     result: Omit<IResult, "_id" | "createdAt" | "updatedAt">
   ) => {
-    const res = await axiosInstance.post(`/api/results`, result);
+    const payload = {
+      student: result.studentId,
+      semester: result.semester,
+      year: result.session,
+      subjects: result.subjects,
+    };
+
+    const res = await axiosInstance.post(`/api/results`, payload);
 
     if (res.status === 200 || res.status === 201) {
       router.refresh();

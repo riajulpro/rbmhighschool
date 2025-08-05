@@ -16,7 +16,7 @@ import {
 import { CrudDataTable } from "@/components/ui/crud-data-table";
 import type { IResult, FormField } from "@/types/index";
 import { useEffect, useState, useMemo } from "react";
-import axios from "axios";
+import axiosInstance from "@/lib/axios";
 
 const columns: ColumnDef<IResult>[] = [
   {
@@ -30,9 +30,10 @@ const columns: ColumnDef<IResult>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("studentName")}</div>
-    ),
+    cell: ({ row }) => {
+      const student: { studentName: string } = row.getValue("student");
+      return <div className="font-medium">{student.studentName}</div>;
+    },
   },
   {
     accessorKey: "semester",
@@ -117,7 +118,7 @@ const columns: ColumnDef<IResult>[] = [
   },
 ];
 
-function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
+function useResultFormFields() {
   const [session, setSession] = useState("2025");
   const [className, setClassName] = useState("10");
   const [students, setStudents] = useState<{ label: string; value: string }[]>(
@@ -125,97 +126,44 @@ function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
   );
   const [loading, setLoading] = useState(false);
   const [selectedStudentId, setSelectedStudentId] = useState("");
-  const [studentNameMap, setStudentNameMap] = useState<Record<string, string>>(
-    {}
-  );
 
   useEffect(() => {
     const fetchStudents = async () => {
-      if (!session || !className) {
-        console.log("Resetting students: session or className empty", {
-          session,
-          className,
-        });
-        setStudents([]);
-        setStudentNameMap({});
-        setSelectedStudentId("");
-        setFormData((prev: any) => ({
-          ...prev,
-          session: "",
-          class: "",
-          studentId: "",
-          studentName: "",
-        }));
-        return;
-      }
+      if (session && className) {
+        try {
+          setLoading(true);
 
-      try {
-        setLoading(true);
-        console.log("Fetching students for:", { session, className });
-        const res = await axios.get(
-          `https://rbmhighschool-server.onrender.com/api/students/select?session=${session}&class=${className}`
-        );
-        console.log("API response:", res.data);
+          const { data } = await axiosInstance.get(
+            `https://rbmhighschool-server.onrender.com/api/students/select?session=${session}&class=${className}`
+          );
 
-        const options = res.data.students.map(
-          (s: { _id: string; studentName: string }) => ({
+          const options = data.students.map((s: any) => ({
             label: s.studentName,
             value: s._id,
-          })
-        );
+          }));
 
-        const nameMap: Record<string, string> = {};
-        res.data.students.forEach((s: { _id: string; studentName: string }) => {
-          nameMap[s._id] = s.studentName;
-        });
+          const nameMap: Record<string, string> = {};
+          data.students.forEach((s: any) => {
+            nameMap[s._id] = s.studentName;
+          });
 
-        console.log("Setting students and nameMap:", { options, nameMap });
-        setStudentNameMap(nameMap);
-        setStudents(options);
-        setSelectedStudentId("");
-        setFormData((prev: any) => ({
-          ...prev,
-          studentId: "",
-          studentName: "",
-        }));
-      } catch (error) {
-        console.error("Failed to fetch students:", error);
+          setStudents(options);
+          setSelectedStudentId("");
+        } catch (error) {
+          console.error("Failed to fetch students:", error);
+          setStudents([]);
+          setSelectedStudentId("");
+        } finally {
+          setLoading(false);
+        }
+      } else {
         setStudents([]);
-        setStudentNameMap({});
         setSelectedStudentId("");
-        setFormData((prev: any) => ({
-          ...prev,
-          studentId: "",
-          studentName: "",
-        }));
-      } finally {
-        setLoading(false);
-        console.log("Fetch complete, loading:", false);
       }
     };
 
     fetchStudents();
-  }, [session, className, setFormData]);
-
-  useEffect(() => {
-    console.log("Selected student changed:", {
-      selectedStudentId,
-      studentName: studentNameMap[selectedStudentId],
-    });
-    if (selectedStudentId && studentNameMap[selectedStudentId]) {
-      setFormData((prev: any) => ({
-        ...prev,
-        studentId: selectedStudentId,
-        studentName: studentNameMap[selectedStudentId],
-      }));
-    } else {
-      setFormData((prev: any) => ({
-        ...prev,
-        studentId: "",
-        studentName: "",
-      }));
-    }
-  }, [selectedStudentId, studentNameMap, setFormData]);
+  }, [session, className]);
 
   const formFields: FormField[] = useMemo(
     () => [
@@ -229,11 +177,7 @@ function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
           { label: "2025", value: "2025" },
         ],
         value: session,
-        onChange: (val: string) => {
-          console.log("Session changed:", val);
-          setSession(val);
-          setFormData((prev: any) => ({ ...prev, session: val, year: val }));
-        },
+        onChange: (val: string) => setSession(val),
       },
       {
         name: "class",
@@ -247,11 +191,7 @@ function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
           { label: "10", value: "10" },
         ],
         value: className,
-        onChange: (val: string) => {
-          console.log("Class changed:", val);
-          setClassName(val);
-          setFormData((prev: any) => ({ ...prev, class: val }));
-        },
+        onChange: (val: string) => setClassName(val),
       },
       {
         name: "studentId",
@@ -265,20 +205,8 @@ function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
           : "Select session and class first",
         disabled: loading || students.length === 0,
         value: selectedStudentId,
-        onChange: (val: string) => {
-          console.log("Student selected:", val);
-          setSelectedStudentId(val);
-        },
-        key: `student-select-${students.length}-${session}-${className}`,
-      },
-      {
-        name: "studentName",
-        label: "Student Name",
-        type: "text",
-        required: true,
-        placeholder: "Auto-filled after selecting student",
-        value: selectedStudentId ? studentNameMap[selectedStudentId] || "" : "",
-        disabled: true,
+        onChange: (val: string) => setSelectedStudentId(val),
+        key: students.length,
       },
       {
         name: "semester",
@@ -292,51 +220,18 @@ function useResultFormFields(setFormData: (data: Record<string, any>) => void) {
         ],
       },
       {
-        name: "year",
-        label: "Year",
-        type: "text",
-        required: true,
-        value: session,
-        placeholder: "e.g., 2024",
-        disabled: true,
-      },
-      {
-        name: "gpa",
-        label: "GPA",
-        type: "text",
-        required: true,
-        placeholder: "e.g., 4.00",
-      },
-      {
-        name: "overallGrade",
-        label: "Overall Grade",
-        type: "text",
-        required: true,
-        placeholder: "e.g., A+, A, B",
-      },
-      {
         name: "subjects",
         label: "Subjects",
         type: "subject-list",
         subjectFields: [
           { name: "subject", label: "Subject", type: "text" },
           { name: "marks", label: "Marks", type: "text" },
-          { name: "grade", label: "Grade", type: "text" },
-          { name: "point", label: "Point", type: "text" },
           { name: "comments", label: "Comments", type: "textarea" },
         ],
         defaultValue: (item: IResult) => item.subjects || [],
       },
     ],
-    [
-      session,
-      className,
-      students,
-      loading,
-      selectedStudentId,
-      studentNameMap,
-      setFormData,
-    ]
+    [className, loading, selectedStudentId, session, students]
   );
 
   return formFields;
@@ -357,8 +252,7 @@ export function ResultTable({
   onEdit,
   onDelete,
 }: ResultTableProps) {
-  const [formData, setFormData] = useState<Record<string, any>>({});
-  const formFields = useResultFormFields(setFormData);
+  const formFields = useResultFormFields();
 
   const transformResultData = (
     resultData: Partial<IResult>
@@ -372,8 +266,6 @@ export function ResultTable({
       point: sub.point ? Number(sub.point) : undefined,
     })),
   });
-
-  console.log("Current formData:", formData);
 
   return (
     <CrudDataTable

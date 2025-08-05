@@ -113,6 +113,7 @@ export interface IResult extends BaseDocument {
   subjects: SubjectResult[];
   gpa: number;
   overallGrade: string;
+  session?: string;
 }
 
 export interface IClassRoutine extends BaseDocument {

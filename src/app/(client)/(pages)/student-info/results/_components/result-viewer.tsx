@@ -204,10 +204,21 @@ export function ResultViewer() {
             <h2 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-gray-50">
               Student Academic Result
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 student-info">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-gray-700 dark:text-gray-300 student-info">
               <p>
-                <strong>Student Name:</strong> {result.student.name || "N/A"}
+                <strong>Student Name:</strong>{" "}
+                {result.student.studentName || "N/A"}
               </p>
+              <div className="flex items-center gap-2">
+                <p>
+                  <strong>Father Name:</strong>{" "}
+                  {result.student.fatherName || "N/A"}
+                </p>
+                <p>
+                  <strong>Mother Name:</strong>{" "}
+                  {result.student.motherName || "N/A"}
+                </p>
+              </div>
               <p>
                 <strong>Class:</strong> {result.student.class || "N/A"}
               </p>

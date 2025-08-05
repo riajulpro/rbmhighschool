@@ -201,10 +201,23 @@ export function CrudDataTable<T extends BaseDocument>({
     value: any,
     onChange: (value: any) => void
   ) => {
+    const handleChange = (newValue: any) => {
+      // Update formData
+      onChange(newValue);
+      // Call the field's custom onChange handler if it exists
+      if (field.onChange) {
+        field.onChange(newValue);
+      }
+    };
+
     switch (field.type) {
       case "select":
         return (
-          <Select value={value || ""} onValueChange={onChange}>
+          <Select
+            key={field.name}
+            value={value || ""}
+            onValueChange={handleChange}
+          >
             <SelectTrigger>
               <SelectValue
                 placeholder={field.placeholder || `Select ${field.label}`}
@@ -223,7 +236,7 @@ export function CrudDataTable<T extends BaseDocument>({
         return (
           <Textarea
             value={value || ""}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             placeholder={field.placeholder}
           />
         );
@@ -232,7 +245,7 @@ export function CrudDataTable<T extends BaseDocument>({
           <Input
             type="date"
             value={value ? new Date(value).toISOString().split("T")[0] : ""}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
           />
         );
       case "password":
@@ -240,7 +253,7 @@ export function CrudDataTable<T extends BaseDocument>({
           <Input
             type="password"
             value={value || ""}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             placeholder={field.placeholder}
           />
         );
@@ -257,11 +270,11 @@ export function CrudDataTable<T extends BaseDocument>({
             ...updatedSubjects[index],
             [subField]: subValue,
           };
-          onChange(updatedSubjects); // Update parent formData
+          handleChange(updatedSubjects); // Update parent formData and trigger field.onChange
         };
 
         const addSubject = () => {
-          onChange([
+          handleChange([
             ...currentSubjects,
             { subject: "", marks: 0, grade: "", point: 0, comments: "" },
           ]);
@@ -269,7 +282,7 @@ export function CrudDataTable<T extends BaseDocument>({
 
         const removeSubject = (index: number) => {
           const updatedSubjects = currentSubjects.filter((_, i) => i !== index);
-          onChange(updatedSubjects);
+          handleChange(updatedSubjects);
         };
 
         return (
@@ -291,7 +304,6 @@ export function CrudDataTable<T extends BaseDocument>({
                       {subFieldDef.label}
                     </Label>
                     <div className="col-span-3">
-                      {/* Recursively call renderFormField for nested subject fields */}
                       {renderFormField(
                         subFieldDef,
                         (sub as any)[subFieldDef.name],
@@ -328,7 +340,7 @@ export function CrudDataTable<T extends BaseDocument>({
           <Input
             type={field.type}
             value={value || ""}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
             placeholder={field.placeholder}
           />
         );
