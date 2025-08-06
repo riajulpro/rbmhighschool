@@ -8,7 +8,7 @@ const page = async () => {
 
   return (
     <Suspense fallback={<Spinner />}>
-      <InstitutionInfoPage institutionData={[info]} />
+      <InstitutionInfoPage institutionData={info ? [info] : []} />
     </Suspense>
   );
 };

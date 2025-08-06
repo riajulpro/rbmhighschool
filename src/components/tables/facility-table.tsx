@@ -239,7 +239,7 @@ export function FacilityTable({
       onAdd={onAdd}
       onEdit={onEdit}
       onDelete={onDelete}
-      title="Facilities"
+      title="Facilities   "
       createFormFields={formFields}
       editFormFields={formFields}
     />

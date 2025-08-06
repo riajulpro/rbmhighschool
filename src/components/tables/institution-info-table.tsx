@@ -314,7 +314,7 @@ export function InstitutionInfoTable({
       onAdd={onAdd}
       onEdit={onEdit}
       onDelete={onDelete}
-      title="Institution Info"
+      title="Institution Info   "
       createFormFields={formFields}
       editFormFields={formFields}
     />
