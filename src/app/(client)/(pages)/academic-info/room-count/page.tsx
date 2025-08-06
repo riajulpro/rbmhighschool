@@ -1,6 +1,8 @@
 import { DataTable } from "@/components/shared/data-table";
+import Spinner from "@/components/shared/spinner";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
+import { Suspense } from "react";
 
 // const rooms = [
 //   { serial: 1, name: "প্রধান শিক্ষকের কক্ষ", quantity: "১টি" },
@@ -51,8 +53,9 @@ const page = async () => {
   return (
     <div>
       <Title text="কক্ষ সংখ্যা" />
-
-      <DataTable data={data} columns={columns} searchable={false} />
+      <Suspense fallback={<Spinner />}>
+        <DataTable data={data} columns={columns} searchable={false} />
+      </Suspense>
     </div>
   );
 };

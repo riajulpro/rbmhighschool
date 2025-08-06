@@ -1,6 +1,8 @@
 import { DataTable } from "@/components/shared/data-table";
+import Spinner from "@/components/shared/spinner";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
+import { Suspense } from "react";
 
 type Vacancy = {
   serial: number;
@@ -32,8 +34,9 @@ const page = async () => {
   return (
     <div>
       <Title text="শূণ্যপদের তালিকা" />
-
-      <DataTable data={data} columns={columns} searchable={false} />
+      <Suspense fallback={<Spinner />}>
+        <DataTable data={data} columns={columns} searchable={false} />
+      </Suspense>
     </div>
   );
 };

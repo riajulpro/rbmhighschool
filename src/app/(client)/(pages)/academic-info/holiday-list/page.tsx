@@ -1,6 +1,8 @@
 import { DataTable } from "@/components/shared/data-table";
+import Spinner from "@/components/shared/spinner";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
+import { Suspense } from "react";
 
 type Vacation = {
   date: number;
@@ -32,8 +34,9 @@ const page = async () => {
   return (
     <div>
       <Title text="ছুটির তালিকা" />
-
-      <DataTable data={data} columns={columns} searchable={false} />
+      <Suspense fallback={<Spinner />}>
+        <DataTable data={data} columns={columns} searchable={false} />
+      </Suspense>
     </div>
   );
 };

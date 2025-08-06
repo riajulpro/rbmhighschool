@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import PreviewPDF from "@/components/shared/pdf/preview";
+import Spinner from "@/components/shared/spinner";
 import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
 import { INotice } from "@/types/notices";
+import { Suspense } from "react";
 
 const NoticenoticeIdwithDetails = async ({ params }: { params: any }) => {
   const { noticeId } = params;
@@ -25,12 +27,12 @@ const NoticenoticeIdwithDetails = async ({ params }: { params: any }) => {
   return (
     <div>
       <Title text="নোটিশ এর বিবরণ" />
-      <div>
+      <Suspense fallback={<Spinner />}>
         <h3 className="text-lg font-medium md:text-2xl border-b border-gray-300 mb-3 pb-3 text-center">
           {notice.title}
         </h3>
         <PreviewPDF path={notice.docPath} />
-      </div>
+      </Suspense>
     </div>
   );
 };

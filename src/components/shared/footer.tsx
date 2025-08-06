@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Footer = () => {
   return (
     <footer className="p-5 md:min-h-40 bg-slate-950 text-white relative border-t-2 border-[#006A4E] mt-5">
@@ -30,7 +32,14 @@ const Footer = () => {
               মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর
             </p>
             <p className="text-sm">
-              প্রযুক্তি সহযোগিতায় <span>RiaJul Pro</span>
+              প্রযুক্তি সহযোগিতায়{" "}
+              <Link
+                target="_blank"
+                href="https://riajulpro-pf.vercel.app"
+                className="text-lime-400"
+              >
+                RiaJul Pro
+              </Link>
             </p>
           </div>
         </div>

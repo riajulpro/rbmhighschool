@@ -3,6 +3,8 @@ import Title from "@/components/shared/title";
 import { getData } from "@/lib/getData";
 import { TNotices } from "@/types/notices";
 import AllNoticesTable from "./_components/all-notices-table";
+import { Suspense } from "react";
+import Spinner from "@/components/shared/spinner";
 
 const NoticesPage = async () => {
   const { notices }: { notices: TNotices } = await getData("/api/notices");
@@ -10,14 +12,15 @@ const NoticesPage = async () => {
   return (
     <div>
       <Title text="নোটিশ" />
-
-      {notices.length > 0 ? (
-        <div>
-          <AllNoticesTable notices={notices} />
-        </div>
-      ) : (
-        <NoDataAvailable field="notices!" />
-      )}
+      <Suspense fallback={<Spinner />}>
+        {notices.length > 0 ? (
+          <div>
+            <AllNoticesTable notices={notices} />
+          </div>
+        ) : (
+          <NoDataAvailable field="notices!" />
+        )}
+      </Suspense>
     </div>
   );
 };
