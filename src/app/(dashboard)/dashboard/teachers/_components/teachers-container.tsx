@@ -14,7 +14,12 @@ export default function TeachersPage({
   const handleAdd = async (
     teacher: Omit<ITeacher, "_id" | "createdAt" | "updatedAt">
   ) => {
-    const res = await axiosInstance.post(`/api/teachers`, teacher);
+    const payload = {
+      ...teacher,
+      institution: "Rampur Bazar Majidia High School",
+    };
+
+    const res = await axiosInstance.post(`/api/teachers`, payload);
 
     if (res.status === 200 || res.status === 201) {
       router.refresh();

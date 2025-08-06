@@ -24,8 +24,6 @@ export const authOptions: NextAuthOptions = {
 
           const loginPath = `${process.env.BACKEND_URL}/api/auth/login`;
 
-          console.log(loginPath);
-
           const response = await axios.post<{
             user: CustomUser;
             token: string;
@@ -33,8 +31,6 @@ export const authOptions: NextAuthOptions = {
             email: credentials.email,
             password: credentials.password,
           });
-
-          console.log({ response });
 
           const { user, token } = response.data;
           if (user) {

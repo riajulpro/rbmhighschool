@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -15,6 +16,8 @@ import {
 } from "@/components/ui/dialog";
 import { CrudDataTable } from "@/components/ui/crud-data-table";
 import type { ITeacher, FormField } from "@/types/index";
+import { useEffect, useMemo, useState } from "react";
+import axiosInstance from "@/lib/axios";
 
 const columns: ColumnDef<ITeacher>[] = [
   {
@@ -197,68 +200,155 @@ const columns: ColumnDef<ITeacher>[] = [
   },
 ];
 
-const formFields: FormField[] = [
-  {
-    name: "userId",
-    label: "User ID",
-    type: "text",
-    required: true,
-    placeholder: "Enter associated user ID",
-  },
-  {
-    name: "teacherName",
-    label: "Teacher Name",
-    type: "text",
-    required: true,
-    placeholder: "Enter teacher's full name",
-  },
-  {
-    name: "designation",
-    label: "Designation",
-    type: "select",
-    required: true,
-    options: [
-      { value: "Head Teacher", label: "Head Teacher" },
-      { value: "Senior Teacher", label: "Senior Teacher" },
-      { value: "Assistant Teacher", label: "Assistant Teacher" },
-      { value: "Lecturer", label: "Lecturer" },
-      { value: "Subject Coordinator", label: "Subject Coordinator" },
-      { value: "Class Teacher", label: "Class Teacher" },
-      { value: "Counselor", label: "Counselor" },
-      { value: "Sports Coach", label: "Sports Coach" },
-      { value: "Art Teacher", label: "Art Teacher" },
-      { value: "Music Teacher", label: "Music Teacher" },
-      { value: "IT Teacher", label: "IT Teacher" },
-      { value: "Other", label: "Other" },
+function useResultFormFields() {
+  const [teachersList, setTeachersList] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchTeachersList = async () => {
+      try {
+        setLoading(true);
+
+        const { data } = await axiosInstance.get(`/api/auth/get-all-teachers`);
+
+        const options = data.teachers.map((s: any) => ({
+          label: s.name,
+          value: s._id,
+        }));
+
+        setTeachersList(options);
+      } catch (error) {
+        console.error("Failed to fetch teachersList:", error);
+        setTeachersList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeachersList();
+  }, []);
+
+  const formFields: FormField[] = useMemo(
+    () => [
+      {
+        name: "userId",
+        label: "Select Teacher ID",
+        type: "select",
+        required: true,
+        options: teachersList,
+        placeholder: loading ? "Loading teachers..." : "Select any teachers",
+        disabled: loading || teachersList.length === 0,
+      },
+      {
+        name: "designation",
+        label: "Designation",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Head Teacher", label: "Head Teacher" },
+          { value: "Senior Teacher", label: "Senior Teacher" },
+          { value: "Assistant Teacher", label: "Assistant Teacher" },
+          { value: "Lecturer", label: "Lecturer" },
+          { value: "Subject Coordinator", label: "Subject Coordinator" },
+          { value: "Class Teacher", label: "Class Teacher" },
+          { value: "Counselor", label: "Counselor" },
+          { value: "Sports Coach", label: "Sports Coach" },
+          { value: "Art Teacher", label: "Art Teacher" },
+          { value: "Music Teacher", label: "Music Teacher" },
+          { value: "IT Teacher", label: "IT Teacher" },
+          { value: "Other", label: "Other" },
+        ],
+      },
+      {
+        name: "phone",
+        label: "Phone Number",
+        type: "text",
+        required: true,
+        placeholder: "Enter phone number",
+      },
+      {
+        name: "profileImg",
+        label: "Profile Image URL",
+        type: "text",
+        placeholder: "Enter profile image URL (optional)",
+      },
+      {
+        name: "specialization",
+        label: "Specialization (comma-separated)",
+        type: "text",
+        placeholder: "e.g., Math, Physics, English Literature",
+      },
     ],
-  },
-  {
-    name: "phone",
-    label: "Phone Number",
-    type: "text",
-    required: true,
-    placeholder: "Enter phone number",
-  },
-  {
-    name: "institution",
-    label: "Institution",
-    type: "text",
-    required: true,
-    placeholder: "Enter institution name",
-  },
-  {
-    name: "profileImg",
-    label: "Profile Image URL",
-    type: "text",
-    placeholder: "Enter profile image URL (optional)",
-  },
-  {
-    name: "specialization",
-    label: "Specialization (comma-separated)",
-    type: "text",
-    placeholder: "e.g., Math, Physics, English Literature",
-  },
-];
+    [teachersList, loading]
+  );
+
+  return formFields;
+}
+
+// const formFields: FormField[] = [
+//   {
+//     name: "userId",
+//     label: "User ID",
+//     type: "text",
+//     required: true,
+//     placeholder: "Enter associated user ID",
+//   },
+//   {
+//     name: "teacherName",
+//     label: "Teacher Name",
+//     type: "text",
+//     required: true,
+//     placeholder: "Enter teacher's full name",
+//   },
+//   {
+//     name: "designation",
+//     label: "Designation",
+//     type: "select",
+//     required: true,
+//     options: [
+//       { value: "Head Teacher", label: "Head Teacher" },
+//       { value: "Senior Teacher", label: "Senior Teacher" },
+//       { value: "Assistant Teacher", label: "Assistant Teacher" },
+//       { value: "Lecturer", label: "Lecturer" },
+//       { value: "Subject Coordinator", label: "Subject Coordinator" },
+//       { value: "Class Teacher", label: "Class Teacher" },
+//       { value: "Counselor", label: "Counselor" },
+//       { value: "Sports Coach", label: "Sports Coach" },
+//       { value: "Art Teacher", label: "Art Teacher" },
+//       { value: "Music Teacher", label: "Music Teacher" },
+//       { value: "IT Teacher", label: "IT Teacher" },
+//       { value: "Other", label: "Other" },
+//     ],
+//   },
+//   {
+//     name: "phone",
+//     label: "Phone Number",
+//     type: "text",
+//     required: true,
+//     placeholder: "Enter phone number",
+//   },
+//   {
+//     name: "institution",
+//     label: "Institution",
+//     type: "text",
+//     required: true,
+//     placeholder: "Enter institution name",
+//   },
+//   {
+//     name: "profileImg",
+//     label: "Profile Image URL",
+//     type: "text",
+//     placeholder: "Enter profile image URL (optional)",
+//   },
+//   {
+//     name: "specialization",
+//     label: "Specialization (comma-separated)",
+//     type: "text",
+//     placeholder: "e.g., Math, Physics, English Literature",
+//   },
+// ];
 
 interface TeacherTableProps {
   data: ITeacher[];
@@ -275,7 +365,8 @@ export function TeacherTable({
   onEdit,
   onDelete,
 }: TeacherTableProps) {
-  // Transform specialization from comma-separated string to array for form submission
+  const formFields = useResultFormFields();
+
   const handleAddWithSpecialization = async (
     teacherData: Omit<ITeacher, "_id" | "createdAt" | "updatedAt">
   ) => {

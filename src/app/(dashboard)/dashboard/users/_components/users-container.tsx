@@ -23,7 +23,7 @@ export default function UsersPage({
   };
 
   const handleEdit = async (id: string, updatedUser: Partial<IUser>) => {
-    const res = await axiosInstance.put(`/api/users/${id}`, updatedUser);
+    const res = await axiosInstance.put(`/api/auth/update/${id}`, updatedUser);
 
     if (res.status === 200) {
       router.refresh();
@@ -31,7 +31,7 @@ export default function UsersPage({
   };
 
   const handleDelete = async (id: string) => {
-    const res = await axiosInstance.delete(`/api/users/${id}`);
+    const res = await axiosInstance.delete(`/api/auth/${id}`);
 
     if (res.status === 200) {
       router.refresh();

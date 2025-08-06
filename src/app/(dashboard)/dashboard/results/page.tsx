@@ -4,8 +4,6 @@ import ResultsPage from "./_components/results-container";
 const page = async () => {
   const data = await getData("/api/results");
 
-  console.log(data);
-
   return (
     <div>
       <ResultsPage resultData={data} />

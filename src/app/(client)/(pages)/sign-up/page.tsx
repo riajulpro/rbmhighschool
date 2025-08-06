@@ -20,13 +20,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 export default function SignInPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,15 +41,12 @@ export default function SignInPage() {
         name,
         email,
         password,
-        role,
       };
 
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`,
         data
       );
-
-      console.log(res);
 
       if (res.status === 200 || res.status === 201) {
         toast.success("Account successfully registered!");
@@ -65,7 +60,7 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="md:min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <Card className="shadow-lg border-none bg-white">
           <CardHeader className="space-y-1">
@@ -82,7 +77,7 @@ export default function SignInPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            <div className="flex items-center gap-3 justify-center">
+            {/* <div className="flex items-center gap-3 justify-center">
               <Button
                 onClick={() => setRole("student")}
                 className={cn(
@@ -105,7 +100,7 @@ export default function SignInPage() {
               >
                 Teacher
               </Button>
-            </div>
+            </div> */}
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
