@@ -12,7 +12,7 @@ import { detectImageSourceType } from "@/lib/detect-img-url";
 
 export default function Banner({ images }: { images: string[] }) {
   return (
-    <div className="h-48 md:h-[500px] mb-5 rounded overflow-hidden">
+    <div className="h-48 md:h-[500px] mb-3 rounded overflow-hidden">
       <Swiper
         spaceBetween={30}
         loop={true}

@@ -11,7 +11,7 @@ const Notices = async () => {
   const { notices }: { notices: TNotices } = await res.json();
 
   return (
-    <div className="rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden mb-5">
+    <div className="rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden mb-5 bg-white">
       <h2 className="text-xl font-semibold bg-[#006A4E] text-center text-white py-1">
         নোটিশ
       </h2>

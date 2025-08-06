@@ -18,10 +18,10 @@ const Footer = () => {
             <h4 className="font-medium text-xl md:text-2xl">যোগাযোগ</h4>
             <p className="text-sm">রামপুর বাজার, ফরিদগঞ্জ, চাঁদপুর, বাংলাদেশ</p>
             <p className="text-sm">
-              <span className="font-medium">মোবাইল:</span> +880170-000000
+              <span className="font-medium">মোবাইল:</span> +8801820159878
             </p>
             <p className="text-sm">
-              <span className="font-medium">ইমেইল:</span> zogazog@gmail.com
+              <span className="font-medium">ইমেইল:</span> hm311261@gmail.com
             </p>
           </div>
           <div className="flex items-center justify-center flex-col">

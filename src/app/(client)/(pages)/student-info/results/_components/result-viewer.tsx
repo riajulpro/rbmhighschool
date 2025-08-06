@@ -35,6 +35,8 @@ export function ResultViewer() {
   const [studentClass, setStudentClass] = useState("");
   const [session, setSession] = useState("");
   const [rollNumber, setRollNumber] = useState("");
+  const [semester, setSemester] = useState("");
+
   const [isPending, setIsPending] = useState(false);
 
   const [result, setResult] = useState<ResultData | null>(null);
@@ -91,6 +93,7 @@ export function ResultViewer() {
       class: studentClass,
       session,
       rollNumber,
+      semester,
     };
 
     try {
@@ -125,6 +128,7 @@ export function ResultViewer() {
 
   const sessions = ["2025", "2024", "2023", "2022", "2021"];
   const classes = ["6", "7", "8", "9", "10"];
+  const semesters = ["FirstSemester", "MidTerm", "Annual"];
 
   return (
     <Card className="w-full max-w-3xl mx-auto shadow-lg">
@@ -139,7 +143,7 @@ export function ResultViewer() {
       <CardContent>
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
+          className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6"
         >
           <div className="grid gap-2">
             <Label htmlFor="session">Session</Label>
@@ -149,6 +153,21 @@ export function ResultViewer() {
               </SelectTrigger>
               <SelectContent>
                 {sessions.map((sess) => (
+                  <SelectItem key={sess} value={sess}>
+                    {sess}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="session">Semester</Label>
+            <Select value={semester} onValueChange={setSemester} required>
+              <SelectTrigger id="session">
+                <SelectValue placeholder="Select Semester" />
+              </SelectTrigger>
+              <SelectContent>
+                {semesters.map((sess) => (
                   <SelectItem key={sess} value={sess}>
                     {sess}
                   </SelectItem>

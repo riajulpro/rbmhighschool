@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const ShortDetails = () => {
   return (
-    <div className="rounded-sm shadow-sm overflow-hidden my-3 md:mt-0 md:mb-5">
+    <div className="rounded-sm shadow-sm overflow-hidden my-3 md:mt-0 md:mb-5 bg-white">
       <h2 className="text-xl font-semibold bg-[#006A4E] text-center text-white py-1">
         রামপুর বাজার মজিদিয়া উচ্চ বিদ্যালয়
       </h2>
@@ -16,7 +16,7 @@ const ShortDetails = () => {
             height={500}
           />
         </div>
-        <div className="text-justify font-hindSiliguri">
+        <div className="text-justify font-hindSiliguri text-lg">
           আমরা এখানে আপনাকে একটি আদর্শ শিক্ষামূলক পরিবেশে স্বাগত জানাচ্ছি।
           আমাদের লক্ষ্য হল ছাত্র-ছাত্রীদের উন্নত শিক্ষা এবং সম্পূর্ণ ব্যক্তিত্ব
           উন্নত করা। আমরা নৈতিকতা, দায়িত্ব, এবং কর্মঠতার মাধ্যমে একটি সমৃদ্ধ

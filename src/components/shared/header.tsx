@@ -28,8 +28,9 @@ const Header = async () => {
   );
 
   return (
-    <header className="relative">
+    <header>
       {topHeaderSection}
+
       <Navigation />
     </header>
   );

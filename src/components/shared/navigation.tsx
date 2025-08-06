@@ -99,7 +99,7 @@ export default function Navigation() {
 
   return (
     <nav className="bg-[#006A4E] shadow-lg">
-      <div className="flex justify-between items-center h-auto sticky top-0 z-50">
+      <div className="flex justify-between items-center h-auto">
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center justify-between w-full">
           {dynamicNavLinks.map((link, index) => (
@@ -147,7 +147,7 @@ export default function Navigation() {
                 size="icon"
                 className="text-white hover:bg-[#F42A41]"
               >
-                <Menu className="h-8 w-8" />
+                <Menu className="h-10 w-10" />
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>

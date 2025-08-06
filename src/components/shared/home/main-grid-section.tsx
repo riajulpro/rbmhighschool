@@ -119,7 +119,7 @@ const MainGridSection = () => {
       {instituteInfoStructure.map((section) => (
         <div
           key={section.slug}
-          className="rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+          className="rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden bg-white"
         >
           <h2 className="text-xl font-semibold bg-[#006A4E] text-center text-white py-1">
             {section.title}
