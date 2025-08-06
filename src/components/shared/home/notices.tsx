@@ -1,11 +1,14 @@
-import { getData } from "@/lib/getData";
 import { TNotices } from "@/types/notices";
 import Link from "next/link";
 
 const Notices = async () => {
-  const { notices }: { notices: TNotices } = await getData(
-    "/api/notices?limit=5"
-  );
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/notices?limit=5`;
+  const res = await fetch(url, {
+    next: {
+      revalidate: 60,
+    },
+  });
+  const { notices }: { notices: TNotices } = await res.json();
 
   return (
     <div className="rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden mb-5">

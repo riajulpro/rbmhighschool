@@ -1,5 +1,4 @@
 import Image from "next/image";
-import brandImg from "../../../../public/images/brand_img.jpg";
 
 const ShortDetails = () => {
   return (
@@ -10,12 +9,14 @@ const ShortDetails = () => {
       <div className="p-2 grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="h-[320px] rounded-lg bg-gray-100 overflow-hidden">
           <Image
-            src={brandImg}
+            src="/images/img.jpg"
             alt="Brand Image"
             className="h-full w-full object-cover object-left"
+            width={500}
+            height={500}
           />
         </div>
-        <div className="text-justify">
+        <div className="text-justify font-hindSiliguri">
           আমরা এখানে আপনাকে একটি আদর্শ শিক্ষামূলক পরিবেশে স্বাগত জানাচ্ছি।
           আমাদের লক্ষ্য হল ছাত্র-ছাত্রীদের উন্নত শিক্ষা এবং সম্পূর্ণ ব্যক্তিত্ব
           উন্নত করা। আমরা নৈতিকতা, দায়িত্ব, এবং কর্মঠতার মাধ্যমে একটি সমৃদ্ধ

@@ -11,7 +11,6 @@ export default function Home() {
   return (
     <article>
       <BannerContainer />
-      {/* <NoticeBoard /> */}
       <section className="w-full flex flex-col md:flex-row md:space-x-3">
         <div className="w-full flex flex-col">
           <ShortDetails />

@@ -1,8 +1,13 @@
-import { getData } from "@/lib/getData";
 import Banner from "./banner";
 
 const BannerContainer = async () => {
-  const { photoUrls } = await getData("/api/gallery/slide-photos");
+  const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/gallery/slide-photos`;
+  const res = await fetch(url, {
+    next: {
+      revalidate: 120,
+    },
+  });
+  const { photoUrls } = await res.json();
 
   const slideElements =
     photoUrls.length > 0
