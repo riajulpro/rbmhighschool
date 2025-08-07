@@ -46,22 +46,22 @@ export default function HeadTeacherCardShort({
         <Button
           asChild
           size="sm"
-          className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+          className="flex-1 bg-[var(--primary-color)] text-white"
         >
-          <a href={`tel:${contactNumber}`}>
+          <Link href={`tel:${contactNumber}`}>
             <Phone className="h-4 w-4" />
             <span className="sr-only">Call {name}</span>
-          </a>
+          </Link>
         </Button>
         <Button
           asChild
           size="sm"
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+          className="flex-1 bg-[var(--secondary)] text-white"
         >
-          <a href={`mailto:${contactEmail}`}>
+          <Link href={`mailto:${contactEmail}`}>
             <Mail className="h-4 w-4" />
             <span className="sr-only">Email {name}</span>
-          </a>
+          </Link>
         </Button>
       </div>
     </Card>

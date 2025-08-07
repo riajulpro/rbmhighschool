@@ -106,7 +106,7 @@ export default function Navigation() {
             <div key={index} className="relative group text-nowrap">
               {link.children ? (
                 <div className="relative">
-                  <button className="flex items-center px-3 py-3 text-white hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-medium">
+                  <button className="flex items-center px-3 py-3 text-white hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-medium font-hindSiliguri">
                     {link.title}
                     <ChevronDown className="ml-1 h-4 w-4" />
                   </button>
@@ -118,7 +118,7 @@ export default function Navigation() {
                         <Link
                           key={childIndex}
                           href={child.path}
-                          className="block px-4 py-2 text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200"
+                          className="block px-4 py-2 text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-hindSiliguri"
                         >
                           {child.title}
                         </Link>
@@ -129,7 +129,7 @@ export default function Navigation() {
               ) : (
                 <Link
                   href={link.path}
-                  className="px-3 py-3 text-white hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-medium block"
+                  className="px-3 py-3 text-white hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-medium block font-hindSiliguri"
                 >
                   {link.title}
                 </Link>
@@ -162,7 +162,7 @@ export default function Navigation() {
                   <div key={index}>
                     {link.children ? (
                       <Collapsible>
-                        <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-left text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200">
+                        <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-3 text-left text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-hindSiliguri">
                           {link.title}
                           <ChevronDown className="h-4 w-4" />
                         </CollapsibleTrigger>
@@ -184,7 +184,7 @@ export default function Navigation() {
                     ) : (
                       <Link
                         href={link.path}
-                        className="block px-4 py-3 text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200"
+                        className="block px-4 py-3 text-gray-800 hover:bg-[#F42A41] hover:text-white transition-colors duration-200 font-hindSiliguri"
                         onClick={() => setIsOpen(false)}
                       >
                         {link.title}

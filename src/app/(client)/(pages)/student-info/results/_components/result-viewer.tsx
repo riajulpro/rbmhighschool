@@ -43,45 +43,99 @@ export function ResultViewer() {
   const printRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = () => {
-    if (printRef.current) {
-      const printWindow = window.open("", "_blank");
-
-      if (printWindow) {
-        printWindow.document.write(`
-          <html>
-            <head>
-              <title>Student Result</title>
-              <style>
-                body { font-family: sans-serif; margin: 20px; color: #333; }
-                .print-container { width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-                h1, h2, h3 { text-align: center; margin-bottom: 20px; color: #000; }
-                .student-info p { margin: 5px 0; line-height: 1.5; }
-                .student-info strong { color: #555; }
-                .result-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                .result-table th, .result-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-                .result-table th { background-color: #f2f2f2; font-weight: bold; color: #333; }
-                .result-table tr:nth-child(even) { background-color: #f9f9f9; }
-                .text-green-600 { color: #22c55e; }
-                .text-blue-600 { color: #3b82f6; }
-                @media print {
-                  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                  .no-print { display: none; }
-                }
-              </style>
-            </head>
-            <body>
-              <div class="print-container">
-                ${printRef.current.innerHTML}
-              </div>
-            </body>
-          </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
-      }
+    if (!printRef.current) {
+      toast.error("Error: No content available to print");
+      return;
     }
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) {
+      toast.error("Error: Unable to open print window");
+      return;
+    }
+
+    const printContent = printRef.current.innerHTML;
+    const printDocument = `
+    <html>
+      <head>
+        <title>Student Result</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            color: #333; 
+          }
+          .print-container { 
+            width: 100%; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            border: 1px solid #eee; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+          }
+          h1, h2, h3 { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            color: #000; 
+          }
+          .student-info p { 
+            margin: 5px 0; 
+            line-height: 1.5; 
+          }
+          .student-info strong { 
+            color: #555; 
+          }
+          .result-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+          }
+          .result-table th, .result-table td { 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            text-align: left; 
+          }
+          .result-table th { 
+            background-color: #f2f2f2; 
+            font-weight: bold; 
+            color: #333; 
+          }
+          .result-table tr:nth-child(even) { 
+            background-color: #f9f9f9; 
+          }
+          .text-green-600 { 
+            color: #22c55e; 
+          }
+          .text-blue-600 { 
+            color: #3b82f6; 
+          }
+          @media print {
+            body { 
+              -webkit-print-color-adjust: exact; 
+              print-color-adjust: exact; 
+            }
+            .no-print { 
+              display: none; 
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="print-container">
+          ${printContent}
+        </div>
+        <script>
+          window.onload = () => {
+            window.print();
+            setTimeout(() => window.close(), 100);
+          };
+        </script>
+      </body>
+    </html>
+  `;
+
+    printWindow.document.write(printDocument);
+    printWindow.document.close();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -197,6 +251,7 @@ export function ResultViewer() {
           <div className="grid gap-2">
             <Label htmlFor="rollNumber">Roll Number</Label>
             <Input
+              className=""
               id="rollNumber"
               type="text"
               placeholder="e.g., 12345"
@@ -205,10 +260,10 @@ export function ResultViewer() {
               required
             />
           </div>
-          <div className="md:col-span-3 flex justify-center mt-4">
+          <div className="md:col-span-4 md:col-start-4 flex justify-center mt-4 w-full">
             <Button
               type="submit"
-              className="w-full md:w-auto px-8 py-2"
+              className="w-full md:w-auto px-8 py-2 cursor-pointer bg-[var(--primary-color)]"
               disabled={isPending}
             >
               {isPending ? "Fetching..." : "View Result"}

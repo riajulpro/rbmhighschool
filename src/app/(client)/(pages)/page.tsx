@@ -19,9 +19,9 @@ export default function Home() {
           <MainGridSection />
         </div>
         <div className="md:w-2/4">
-          <div className="mb-4">
+          <div className="my-4 md:mt-0">
             <Link href="/student-info/results">
-              <Button className="bg-[var(--primary-color)] text-white w-full cursor-pointer py-6">
+              <Button className="bg-[var(--primary-color)] hover:bg-[var(--flag-red)] text-white w-full cursor-pointer py-6">
                 <User /> শিক্ষার্থীর রেজাল্ট
               </Button>
             </Link>
