@@ -193,13 +193,6 @@ const editFormFields: FormField[] = [
     placeholder: "Enter user's email address",
   },
   {
-    name: "password",
-    label: "New Password (optional)",
-    type: "password",
-    required: false, // Password is optional for edit
-    placeholder: "Leave blank to keep current password",
-  },
-  {
     name: "role",
     label: "Role",
     type: "select",

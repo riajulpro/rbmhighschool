@@ -15,7 +15,7 @@ export default function UsersPage({
   const handleAdd = async (
     user: Omit<IUser, "_id" | "createdAt" | "updatedAt">
   ) => {
-    const res = await axiosInstance.post(`/api/users`, user);
+    const res = await axiosInstance.post(`/api/auth/register`, user);
 
     if (res.status === 200 || res.status === 201) {
       router.refresh();
