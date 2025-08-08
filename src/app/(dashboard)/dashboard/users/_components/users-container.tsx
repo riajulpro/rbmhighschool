@@ -31,7 +31,7 @@ export default function UsersPage({
   };
 
   const handleDelete = async (id: string) => {
-    const res = await axiosInstance.delete(`/api/auth/${id}`);
+    const res = await axiosInstance.delete(`/api/auth/remove/${id}`);
 
     if (res.status === 200) {
       router.refresh();

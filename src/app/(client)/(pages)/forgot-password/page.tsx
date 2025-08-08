@@ -96,7 +96,7 @@ export default function PasswordResetPage() {
       const response = await axiosInstance.post("/api/auth/verify-otp", {
         email,
         otp,
-        newPassword,
+        password: newPassword,
       });
 
       if (response.status === 200) {
