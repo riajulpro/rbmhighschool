@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
@@ -14,6 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import { CrudDataTable } from "../ui/crud-data-table";
 import type { IClassRoutine, FormField } from "@/types/index";
+import { useEffect, useMemo, useState } from "react";
+import axiosInstance from "@/lib/axios";
 
 const columns: ColumnDef<IClassRoutine>[] = [
   {
@@ -167,91 +170,121 @@ const columns: ColumnDef<IClassRoutine>[] = [
   },
 ];
 
-const formFields: FormField[] = [
-  {
-    name: "class",
-    label: "Class",
-    type: "select",
-    required: true,
-    options: [
-      { value: "Nursery", label: "Nursery" },
-      { value: "KG", label: "KG" },
-      { value: "1", label: "Class 1" },
-      { value: "2", label: "Class 2" },
-      { value: "3", label: "Class 3" },
-      { value: "4", label: "Class 4" },
-      { value: "5", label: "Class 5" },
-      { value: "6", label: "Class 6" },
-      { value: "7", label: "Class 7" },
-      { value: "8", label: "Class 8" },
-      { value: "9", label: "Class 9" },
-      { value: "10", label: "Class 10" },
+function useResultFormFields() {
+  const [teachersList, setTeachersList] = useState<
+    { label: string; value: string }[]
+  >([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchTeachersList = async () => {
+      try {
+        setLoading(true);
+
+        const { data } = await axiosInstance.get(`/api/auth/get-all-teachers`);
+
+        const options = data.teachers.map((s: any) => ({
+          label: s.name,
+          value: s._id,
+        }));
+
+        setTeachersList(options);
+      } catch (error) {
+        console.error("Failed to fetch teachersList:", error);
+        setTeachersList([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeachersList();
+  }, []);
+
+  const formFields: FormField[] = useMemo(
+    () => [
+      {
+        name: "class",
+        label: "Class",
+        type: "select",
+        required: true,
+        options: [
+          { value: "6", label: "Class 6" },
+          { value: "7", label: "Class 7" },
+          { value: "8", label: "Class 8" },
+          { value: "9", label: "Class 9" },
+          { value: "10", label: "Class 10" },
+        ],
+      },
+      {
+        name: "section",
+        label: "Section",
+        type: "select",
+        required: true,
+        options: [
+          { value: "A", label: "Section A" },
+          { value: "B", label: "Section B" },
+          { value: "C", label: "Section C" },
+          { value: "D", label: "Section D" },
+          { value: "E", label: "Section E" },
+        ],
+      },
+      {
+        name: "day",
+        label: "Day",
+        type: "select",
+        required: true,
+        options: [
+          { value: "Sunday", label: "Sunday" },
+          { value: "Monday", label: "Monday" },
+          { value: "Tuesday", label: "Tuesday" },
+          { value: "Wednesday", label: "Wednesday" },
+          { value: "Thursday", label: "Thursday" },
+          { value: "Friday", label: "Friday" },
+          { value: "Saturday", label: "Saturday" },
+        ],
+      },
+      {
+        name: "subject",
+        label: "Subject",
+        type: "text",
+        required: true,
+        placeholder: "e.g., Mathematics, English, Science",
+      },
+      {
+        name: "teacher",
+        label: "Teacher",
+        type: "select",
+        options: teachersList,
+        required: true,
+        placeholder: loading ? "Loading teachers..." : "Select any teachers",
+        disabled: loading || teachersList.length === 0,
+      },
+      {
+        name: "startTime",
+        label: "Start Time",
+        type: "text",
+        required: true,
+        placeholder: "e.g., 09:00 AM",
+      },
+      {
+        name: "endTime",
+        label: "End Time",
+        type: "text",
+        required: true,
+        placeholder: "e.g., 10:00 AM",
+      },
+      {
+        name: "room",
+        label: "Room (Optional)",
+        type: "text",
+        placeholder: "e.g., Room 101, Lab A",
+      },
     ],
-  },
-  {
-    name: "section",
-    label: "Section",
-    type: "select",
-    required: true,
-    options: [
-      { value: "A", label: "Section A" },
-      { value: "B", label: "Section B" },
-      { value: "C", label: "Section C" },
-      { value: "D", label: "Section D" },
-      { value: "Morning", label: "Morning Shift" },
-      { value: "Day", label: "Day Shift" },
-    ],
-  },
-  {
-    name: "day",
-    label: "Day",
-    type: "select",
-    required: true,
-    options: [
-      { value: "Sunday", label: "Sunday" },
-      { value: "Monday", label: "Monday" },
-      { value: "Tuesday", label: "Tuesday" },
-      { value: "Wednesday", label: "Wednesday" },
-      { value: "Thursday", label: "Thursday" },
-      { value: "Friday", label: "Friday" },
-      { value: "Saturday", label: "Saturday" },
-    ],
-  },
-  {
-    name: "subject",
-    label: "Subject",
-    type: "text",
-    required: true,
-    placeholder: "e.g., Mathematics, English, Science",
-  },
-  {
-    name: "teacher",
-    label: "Teacher",
-    type: "text",
-    required: true,
-    placeholder: "e.g., Mr. Smith, Ms. Johnson",
-  },
-  {
-    name: "startTime",
-    label: "Start Time",
-    type: "text",
-    required: true,
-    placeholder: "e.g., 09:00 AM",
-  },
-  {
-    name: "endTime",
-    label: "End Time",
-    type: "text",
-    required: true,
-    placeholder: "e.g., 10:00 AM",
-  },
-  {
-    name: "room",
-    label: "Room (Optional)",
-    type: "text",
-    placeholder: "e.g., Room 101, Lab A",
-  },
-];
+    [teachersList, loading]
+  );
+
+  return formFields;
+}
 
 interface ClassRoutineTableProps {
   data: IClassRoutine[];
@@ -268,6 +301,8 @@ export function ClassRoutineTable({
   onEdit,
   onDelete,
 }: ClassRoutineTableProps) {
+  const formFields = useResultFormFields();
+
   return (
     <CrudDataTable
       data={data}
