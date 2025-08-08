@@ -17,6 +17,7 @@ import { CrudDataTable } from "../ui/crud-data-table";
 import type { IClassRoutine, FormField } from "@/types/index";
 import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "@/lib/axios";
+import { allSubjectsList } from "src/data/all-subjects-list";
 
 const columns: ColumnDef<IClassRoutine>[] = [
   {
@@ -246,9 +247,10 @@ function useResultFormFields() {
       {
         name: "subject",
         label: "Subject",
-        type: "text",
+        type: "select",
+        options: allSubjectsList,
         required: true,
-        placeholder: "e.g., Mathematics, English, Science",
+        placeholder: "Select a subject",
       },
       {
         name: "teacher",
