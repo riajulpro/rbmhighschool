@@ -55,7 +55,7 @@ export default function PostGrid({ posts }: PostGridProps) {
           <CardContent className="p-4">
             <div className="space-y-3">
               <Link
-                href={`/posts/${post._id}`}
+                href={`/recent-news/${post._id}`}
                 className="block hover:text-primary transition-colors"
               >
                 <h3 className="text-xl font-semibold line-clamp-2 leading-tight">
