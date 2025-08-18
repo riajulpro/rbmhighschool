@@ -71,14 +71,43 @@ const formFields: FormField[] = [
   {
     name: "class",
     label: "Class",
-    type: "text",
+    type: "select",
+    options: [
+      { label: "Six", value: "6" },
+      { label: "Seven", value: "7" },
+      { label: "Eight", value: "8" },
+      { label: "Nine", value: "9" },
+      { label: "Ten", value: "10" },
+    ],
     required: true,
     placeholder: "Enter class",
   },
   {
     name: "section",
     label: "Section",
-    type: "text",
+    type: "select",
+    options: [
+      {
+        label: "Section A",
+        value: "A",
+      },
+      {
+        label: "Section B",
+        value: "B",
+      },
+      {
+        label: "Section C",
+        value: "C",
+      },
+      {
+        label: "Section D",
+        value: "D",
+      },
+      {
+        label: "Section E",
+        value: "E",
+      },
+    ],
     required: true,
     placeholder: "Enter section",
   },

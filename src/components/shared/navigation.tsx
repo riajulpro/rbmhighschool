@@ -41,6 +41,10 @@ const navLinks = [
         title: "শিক্ষার্থীর রেজাল্ট",
         path: "/student-info/results",
       },
+      {
+        title: "শিক্ষার্থীদের ফলাফল",
+        path: "/student-info/result-statistic",
+      },
     ],
   },
   {
