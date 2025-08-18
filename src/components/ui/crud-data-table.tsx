@@ -82,15 +82,14 @@ export function CrudDataTable<T extends BaseDocument>({
     []
   );
   const [globalFilter, setGlobalFilter] = React.useState("");
+  const [pageSize, setPageSize] = React.useState(10);
 
-  // Dialog states
   const [isCreateOpen, setIsCreateOpen] = React.useState(false);
   const [isEditOpen, setIsEditOpen] = React.useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState<T | null>(null);
   const [formData, setFormData] = React.useState<Record<string, any>>({});
 
-  // Add actions column to the provided columns
   const tableColumns: ColumnDef<T>[] = [
     ...columns,
     {
@@ -112,7 +111,6 @@ export function CrudDataTable<T extends BaseDocument>({
               <DropdownMenuItem
                 onClick={() => {
                   setSelectedItem(item);
-                  // Initialize formData with item values, applying defaultValue functions
                   const initialFormData: Record<string, any> = {};
                   editFormFields.forEach((field) => {
                     if (field.defaultValue) {
@@ -161,7 +159,16 @@ export function CrudDataTable<T extends BaseDocument>({
       columnFilters,
       globalFilter,
     },
+    initialState: {
+      pagination: {
+        pageSize: pageSize,
+      },
+    },
   });
+
+  React.useEffect(() => {
+    table.setPageSize(pageSize);
+  }, [pageSize, table]);
 
   const handleCreate = async () => {
     try {
@@ -202,9 +209,7 @@ export function CrudDataTable<T extends BaseDocument>({
     onChange: (value: any) => void
   ) => {
     const handleChange = (newValue: any) => {
-      // Update formData
       onChange(newValue);
-      // Call the field's custom onChange handler if it exists
       if (field.onChange) {
         field.onChange(newValue);
       }
@@ -270,7 +275,7 @@ export function CrudDataTable<T extends BaseDocument>({
             ...updatedSubjects[index],
             [subField]: subValue,
           };
-          handleChange(updatedSubjects); // Update parent formData and trigger field.onChange
+          handleChange(updatedSubjects);
         };
 
         const addSubject = () => {
@@ -361,7 +366,7 @@ export function CrudDataTable<T extends BaseDocument>({
         </div>
         <Button
           onClick={() => {
-            setFormData({}); // Clear form data for new entry
+            setFormData({});
             setIsCreateOpen(true);
           }}
         >
@@ -421,32 +426,59 @@ export function CrudDataTable<T extends BaseDocument>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-muted-foreground">
+            Showing {table.getState().pagination.pageIndex * pageSize + 1} to{" "}
+            {Math.min(
+              (table.getState().pagination.pageIndex + 1) * pageSize,
+              table.getFilteredRowModel().rows.length
+            )}{" "}
+            of {table.getFilteredRowModel().rows.length} entries
+          </span>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+        <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">
+              Items per page:
+            </span>
+            <Select
+              value={pageSize.toString()}
+              onValueChange={(value) => setPageSize(Number(value))}
+            >
+              <SelectTrigger className="w-20">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Create Dialog */}
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
         <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -481,7 +513,6 @@ export function CrudDataTable<T extends BaseDocument>({
         </DialogContent>
       </Dialog>
 
-      {/* Edit Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
         <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
@@ -515,7 +546,6 @@ export function CrudDataTable<T extends BaseDocument>({
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

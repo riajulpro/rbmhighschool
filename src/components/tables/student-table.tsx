@@ -1,50 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Eye, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CrudDataTable } from "@/components/ui/crud-data-table";
 import type { IStudent, FormField } from "@/types/index";
-
-const columns: ColumnDef<IStudent>[] = [
-  {
-    accessorKey: "studentName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Student Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("studentName")}</div>
-    ),
-  },
-  {
-    accessorKey: "rollNumber",
-    header: "Roll Number",
-  },
-  {
-    accessorKey: "class",
-    header: "Class",
-  },
-  {
-    accessorKey: "section",
-    header: "Section",
-  },
-  {
-    accessorKey: "session",
-    header: "Session",
-  },
-  {
-    accessorKey: "guardianPhone",
-    header: "Guardian Phone",
-  },
-];
+import { StudentDetailsModal } from "./student-modal-details";
 
 const formFields: FormField[] = [
   {
@@ -179,16 +141,134 @@ export function StudentTable({
   onEdit,
   onDelete,
 }: StudentTableProps) {
+  const [selectedStudent, setSelectedStudent] = useState<IStudent | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const columns: ColumnDef<IStudent>[] = [
+    {
+      accessorKey: "studentName",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Student Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="font-medium">{row.getValue("studentName")}</div>
+      ),
+    },
+    {
+      accessorKey: "rollNumber",
+      header: "Roll Number",
+    },
+    {
+      accessorKey: "class",
+      header: "Class",
+    },
+    {
+      accessorKey: "section",
+      header: "Section",
+    },
+    {
+      accessorKey: "session",
+      header: "Session",
+    },
+    {
+      accessorKey: "guardianPhone",
+      header: "Guardian Phone",
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const student = row.original;
+        return (
+          <div className="flex gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setSelectedStudent(student);
+                setIsModalOpen(true);
+              }}
+              title="View Student"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                // Print student details
+                const printWindow = window.open("", "_blank");
+                printWindow?.document.write(`
+                  <html>
+                    <head>
+                      <title>Student Information - ${student.studentName}</title>
+                      <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { text-align: center; }
+                        .info { margin: 20px 0; }
+                        .info p { margin: 5px 0; }
+                      </style>
+                    </head>
+                    <body>
+                      <h1>Student Information</h1>
+                      <div class="info">
+                        <p><strong>Name:</strong> ${student.studentName}</p>
+                        <p><strong>Roll Number:</strong> ${student.rollNumber}</p>
+                        <p><strong>Class:</strong> ${student.class}</p>
+                        <p><strong>Section:</strong> ${student.section}</p>
+                        <p><strong>Session:</strong> ${student.session}</p>
+                        <p><strong>Father's Name:</strong> ${student.fatherName}</p>
+                        <p><strong>Mother's Name:</strong> ${student.motherName}</p>
+                        <p><strong>Gender:</strong> ${student.gender}</p>
+                        <p><strong>Date of Birth:</strong> ${student.dob}</p>
+                        <p><strong>Guardian Name:</strong> ${student.guardianName}</p>
+                        <p><strong>Guardian Phone:</strong> ${student.guardianPhone}</p>
+                        <p><strong>Address:</strong> ${student.address}</p>
+                      </div>
+                      <script>
+                        window.print();
+                        window.onafterprint = () => window.close();
+                      </script>
+                    </body>
+                  </html>
+                `);
+                printWindow?.document.close();
+              }}
+              title="Print Student Info"
+            >
+              <Printer className="h-4 w-4" />
+            </Button>
+          </div>
+        );
+      },
+    },
+  ];
+
   return (
-    <CrudDataTable
-      data={data}
-      columns={columns}
-      onAdd={onAdd}
-      onEdit={onEdit}
-      onDelete={onDelete}
-      title="Students"
-      createFormFields={formFields}
-      editFormFields={formFields}
-    />
+    <>
+      <CrudDataTable
+        data={data}
+        columns={columns}
+        onAdd={onAdd}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        title="Students"
+        createFormFields={formFields}
+        editFormFields={formFields}
+      />
+
+      <StudentDetailsModal
+        student={selectedStudent}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
+    </>
   );
 }
