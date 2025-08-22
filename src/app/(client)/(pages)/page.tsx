@@ -41,7 +41,7 @@ export default function Home() {
     <article>
       <BannerContainer />
       <section className="w-full flex flex-col md:flex-row md:space-x-3">
-        <div className="w-full flex flex-col">
+        <div className="flex flex-col w-full">
           <ShortDetails />
           <MainGridSection />
         </div>
