@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Spinner from "@/components/shared/spinner";
 import { Badge } from "@/components/ui/badge";
 import { getData } from "@/lib/getData";
@@ -15,7 +16,7 @@ interface Post {
   __v: number;
 }
 
-const PostDetails = async ({ params }: { params: { id: string } }) => {
+const PostDetails = async ({ params }: any) => {
   const { post }: { post: Post } = await getData(`/api/posts/${params.id}`);
 
   return (
