@@ -24,6 +24,7 @@ import {
   LogOut,
   LayoutList,
   Luggage,
+  NotepadText,
 } from "lucide-react";
 
 import {
@@ -165,6 +166,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         title: "Vacations",
         url: "/dashboard/vacations",
         icon: Luggage,
+      },
+      {
+        title: "Exam Results",
+        url: "/dashboard/exam-results",
+        icon: NotepadText,
       },
     ],
     navSecondary: [

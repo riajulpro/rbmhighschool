@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ResultTable } from "@/components/tables/result-table";
@@ -13,13 +14,31 @@ export default function ResultsPage({
   const router = useRouter();
 
   const handleAdd = async (
-    result: Omit<IResult, "_id" | "createdAt" | "updatedAt">
+    // result: Omit<IResult, "_id" | "createdAt" | "updatedAt">
+    result: any
   ) => {
+    const subjects = result.subjects.map((sub: any) => {
+      return {
+        subject: sub.subject,
+        marks: {
+          written: {
+            score: Number(sub.written_score),
+            outOf: Number(sub.written_outOf),
+          },
+          mcq: {
+            score: Number(sub.mcq_score || "0"),
+            outOf: Number(sub.mcq_outOf || "0"),
+          },
+        },
+        comments: sub.comments || "",
+      };
+    });
+
     const payload = {
       student: result.studentId,
       semester: result.semester,
       year: result.session,
-      subjects: result.subjects,
+      subjects: subjects,
     };
 
     const res = await axiosInstance.post(`/api/results`, payload);

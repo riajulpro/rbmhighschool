@@ -98,14 +98,24 @@ export interface IHonoredStudent extends BaseDocument {
 export interface IInstitutionInfo extends BaseDocument {
   name: string;
   logo?: string;
-  establishedYear?: number;
+  establishedDate?: string;
+  firstAcknowledgementDate?: string;
+  recentAcknowledgementDate?: string;
+  mpoAssignmentDate?: string;
+
+  eiinNumber?: string;
+  schoolCode?: string;
+  mpoCode?: string;
+  boardCode?: string;
+  centreCode?: string;
+  stipendCode?: string;
+
   location: string;
   contactEmail: string;
   phone: string;
+
   about?: string;
   shortInfo?: string;
-  eiinNumber?: string;
-  schoolCode?: string;
   fullAddress: string;
 }
 

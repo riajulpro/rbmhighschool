@@ -18,6 +18,12 @@ export default function Home() {
       isBlank: false,
     },
     {
+      name: "মাধ্যমিক ও উচ্চমাধ্যমিক শিক্ষা বোর্ড, কুমিল্লা",
+      path: "https://comillaboard.portal.gov.bd",
+      icon: User,
+      isBlank: true,
+    },
+    {
       name: "Education Board Result",
       path: "http://www.educationboardresults.gov.bd",
       icon: ClipboardList,

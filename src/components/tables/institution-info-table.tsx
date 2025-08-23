@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, Mail, Phone } from "lucide-react";
+import { Eye, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,28 +42,18 @@ const columns: ColumnDef<IInstitutionInfo>[] = [
   },
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Institution Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: "Institution Name",
     cell: ({ row }) => (
       <div className="font-medium text-base">{row.getValue("name")}</div>
     ),
   },
   {
-    accessorKey: "establishedYear",
-    header: "Est. Year",
+    accessorKey: "establishedDate",
+    header: "Est. Date",
     cell: ({ row }) => {
-      const year = row.getValue("establishedYear") as number;
-      return year ? (
-        <Badge variant="outline">{year}</Badge>
+      const date = row.getValue("establishedDate") as string;
+      return date ? (
+        <Badge variant="outline">{date}</Badge>
       ) : (
         <span className="text-muted-foreground">-</span>
       );
@@ -109,186 +99,199 @@ const columns: ColumnDef<IInstitutionInfo>[] = [
     ),
   },
   {
-    id: "details",
-    header: "Details",
+    id: "actions",
+    header: "Actions",
     cell: ({ row }) => {
       const info = row.original;
       return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <Eye className="h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>{info.name}</DialogTitle>
-              <DialogDescription>
-                Complete information about the institution.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-6 py-4">
-              <div className="flex flex-col items-center space-y-4">
-                <Avatar className="h-24 w-24 rounded-none">
-                  <AvatarImage
-                    src={
-                      info.logo ||
-                      "/placeholder.svg?height=96&width=96&text=Logo"
-                    }
-                    alt={info.name}
-                  />
-                  <AvatarFallback className="text-2xl font-bold">
-                    {info.name
-                      ?.split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase() || "I"}
-                  </AvatarFallback>
-                </Avatar>
-                <h3 className="text-xl font-semibold">{info.name}</h3>
-                {info.establishedYear && (
-                  <Badge variant="secondary">
-                    Established: {info.establishedYear}
-                  </Badge>
+        <div className="flex items-center gap-2">
+          {/* Eye button beside 3-dot */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <Eye className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl overflow-y-auto max-h-[80vh]">
+              <DialogHeader>
+                <DialogTitle>{info.name}</DialogTitle>
+                <DialogDescription>
+                  Complete information about the institution.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-6 py-4">
+                {/* Logo + Name */}
+                <div className="flex flex-col items-center space-y-3">
+                  <Avatar className="h-24 w-24 rounded-none">
+                    <AvatarImage
+                      src={
+                        info.logo ||
+                        "/placeholder.svg?height=96&width=96&text=Logo"
+                      }
+                      alt={info.name}
+                    />
+                    <AvatarFallback className="text-2xl font-bold">
+                      {info.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase() || "I"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <h3 className="text-xl font-semibold">{info.name}</h3>
+                  {info.establishedDate && (
+                    <Badge variant="secondary">
+                      Established: {info.establishedDate}
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Contact Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold">Contact Information</h4>
+                    <p>
+                      <strong>Email:</strong> {info.contactEmail}
+                    </p>
+                    <p>
+                      <strong>Phone:</strong> {info.phone}
+                    </p>
+                    <p>
+                      <strong>Location:</strong> {info.location}
+                    </p>
+                    <p>
+                      <strong>Full Address:</strong> {info.fullAddress}
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="font-semibold">Institutional Codes</h4>
+                    {info.eiinNumber && (
+                      <p>
+                        <strong>EIIN:</strong> {info.eiinNumber}
+                      </p>
+                    )}
+                    {info.schoolCode && (
+                      <p>
+                        <strong>School Code:</strong> {info.schoolCode}
+                      </p>
+                    )}
+                    {info.mpoCode && (
+                      <p>
+                        <strong>MPO Code:</strong> {info.mpoCode}
+                      </p>
+                    )}
+                    {info.boardCode && (
+                      <p>
+                        <strong>Board Code:</strong> {info.boardCode}
+                      </p>
+                    )}
+                    {info.centreCode && (
+                      <p>
+                        <strong>Centre Code:</strong> {info.centreCode}
+                      </p>
+                    )}
+                    {info.stipendCode && (
+                      <p>
+                        <strong>Stipend Code:</strong> {info.stipendCode}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Acknowledgements */}
+                <div className="space-y-2 text-sm">
+                  <h4 className="font-semibold">Acknowledgements</h4>
+                  {info.firstAcknowledgementDate && (
+                    <p>
+                      <strong>First:</strong> {info.firstAcknowledgementDate}
+                    </p>
+                  )}
+                  {info.recentAcknowledgementDate && (
+                    <p>
+                      <strong>Recent:</strong> {info.recentAcknowledgementDate}
+                    </p>
+                  )}
+                  {info.mpoAssignmentDate && (
+                    <p>
+                      <strong>MPO Assignment:</strong> {info.mpoAssignmentDate}
+                    </p>
+                  )}
+                </div>
+
+                {/* About */}
+                {info.about && (
+                  <div>
+                    <h4 className="font-semibold">About Us</h4>
+                    <p className="text-muted-foreground text-sm">
+                      {info.about}
+                    </p>
+                  </div>
                 )}
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Contact Information</h4>
-                  <div>
-                    <strong>Email:</strong> {info.contactEmail}
+                {/* Footer */}
+                <div className="border-t pt-4 text-xs text-muted-foreground space-y-1">
+                  <div className="flex justify-between">
+                    <span>Added:</span>
+                    <span>
+                      {new Date(info.createdAt || "").toLocaleDateString()}
+                    </span>
                   </div>
-                  <div>
-                    <strong>Phone:</strong> {info.phone}
+                  <div className="flex justify-between">
+                    <span>Last Updated:</span>
+                    <span>
+                      {new Date(info.updatedAt || "").toLocaleDateString()}
+                    </span>
                   </div>
-                  <div>
-                    <strong>Location:</strong> {info.location}
-                  </div>
-                  <div>
-                    <strong>Full Address:</strong> {info.fullAddress}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Institutional Details</h4>
-                  {info.eiinNumber && (
-                    <div>
-                      <strong>EIIN Number:</strong> {info.eiinNumber}
-                    </div>
-                  )}
-                  {info.schoolCode && (
-                    <div>
-                      <strong>School Code:</strong> {info.schoolCode}
-                    </div>
-                  )}
-                  {info.shortInfo && (
-                    <div>
-                      <strong>Short Info:</strong> {info.shortInfo}
-                    </div>
-                  )}
                 </div>
               </div>
+            </DialogContent>
+          </Dialog>
 
-              {info.about && (
-                <div>
-                  <h4 className="font-semibold">About Us</h4>
-                  <p className="text-muted-foreground text-sm">{info.about}</p>
-                </div>
-              )}
-
-              <div className="border-t pt-4 space-y-2 text-xs text-muted-foreground">
-                <div className="flex justify-between">
-                  <span>Added:</span>
-                  <span>
-                    {new Date(info.createdAt || "").toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Last Updated:</span>
-                  <span>
-                    {new Date(info.updatedAt || "").toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
+          {/* Your 3-dot actions from CrudDataTable will remain here */}
+        </div>
       );
     },
   },
 ];
 
 const formFields: FormField[] = [
+  { name: "name", label: "Institution Name", type: "text", required: true },
+  { name: "logo", label: "Logo URL", type: "text" },
+  { name: "establishedDate", label: "Established Date", type: "text" },
   {
-    name: "name",
-    label: "Institution Name",
+    name: "firstAcknowledgementDate",
+    label: "First Acknowledgement Date",
     type: "text",
-    required: true,
-    placeholder: "Enter full institution name",
   },
   {
-    name: "logo",
-    label: "Logo URL",
+    name: "recentAcknowledgementDate",
+    label: "Recent Acknowledgement Date",
     type: "text",
-    placeholder: "Enter URL for institution logo (optional)",
   },
-  {
-    name: "establishedYear",
-    label: "Established Year",
-    type: "text",
-    placeholder: "e.g., 1990",
-  },
-  {
-    name: "location",
-    label: "Location (City/District)",
-    type: "text",
-    required: true,
-    placeholder: "e.g., Dhaka, Bangladesh",
-  },
+  { name: "mpoAssignmentDate", label: "MPO Assignment Date", type: "text" },
+  { name: "eiinNumber", label: "EIIN Number", type: "text" },
+  { name: "schoolCode", label: "School Code", type: "text" },
+  { name: "mpoCode", label: "MPO Code", type: "text" },
+  { name: "boardCode", label: "Board Code", type: "text" },
+  { name: "centreCode", label: "Centre Code", type: "text" },
+  { name: "stipendCode", label: "Stipend Code", type: "text" },
+  { name: "location", label: "Location", type: "text", required: true },
   {
     name: "contactEmail",
     label: "Contact Email",
     type: "email",
     required: true,
-    placeholder: "Enter contact email",
   },
-  {
-    name: "phone",
-    label: "Phone Number",
-    type: "text",
-    required: true,
-    placeholder: "Enter phone number",
-  },
-  {
-    name: "about",
-    label: "About Institution",
-    type: "textarea",
-    placeholder: "A detailed description about the institution (optional)",
-  },
-  {
-    name: "shortInfo",
-    label: "Short Info",
-    type: "text",
-    placeholder: "A brief tagline or summary (optional)",
-  },
-  {
-    name: "eiinNumber",
-    label: "EIIN Number",
-    type: "text",
-    placeholder: "Enter EIIN number (optional)",
-  },
-  {
-    name: "schoolCode",
-    label: "School Code",
-    type: "text",
-    placeholder: "Enter school code (optional)",
-  },
+  { name: "phone", label: "Phone Number", type: "text", required: true },
+  { name: "about", label: "About Institution", type: "textarea" },
+  { name: "shortInfo", label: "Short Info", type: "text" },
   {
     name: "fullAddress",
     label: "Full Address",
     type: "textarea",
     required: true,
-    placeholder: "Enter full physical address",
   },
 ];
 

@@ -2,8 +2,7 @@ import { getData } from "@/lib/getData";
 import ResultStatisticContainer from "./_components/result-statistic-container";
 
 const StudentResultStatistic = async () => {
-  const data = await getData("/api/result/statistic");
-  console.log(data);
+  const data = await getData("/api/exam-results");
 
   const dummyData = [
     {
@@ -25,7 +24,7 @@ const StudentResultStatistic = async () => {
     },
   ];
 
-  return <ResultStatisticContainer statistics={dummyData} />;
+  return <ResultStatisticContainer statistics={data || dummyData} />;
 };
 
 export default StudentResultStatistic;

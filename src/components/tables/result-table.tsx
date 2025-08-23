@@ -69,7 +69,7 @@ const columns: ColumnDef<ResultType>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="font-medium">{row.original.student.studentName}</div>
+        <div className="font-medium">{row?.original?.student?.studentName}</div>
       );
     },
   },
@@ -144,7 +144,7 @@ const columns: ColumnDef<ResultType>[] = [
           <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                Result Details for {result.student.studentName}
+                Result Details for {result?.student?.studentName}
               </DialogTitle>
               <DialogDescription>
                 {result.semester.replace(/([A-Z])/g, " $1").trim()} -{" "}
@@ -156,44 +156,44 @@ const columns: ColumnDef<ResultType>[] = [
               <h3 className="text-lg font-semibold">Student Information</h3>
               <ul className="grid grid-cols-2 gap-4 text-sm">
                 <li>
-                  <strong>Student Name:</strong> {result.student.studentName}
+                  <strong>Student Name:</strong> {result?.student?.studentName}
                 </li>
                 <li>
                   <strong>{`Father's Name:`}</strong>{" "}
-                  {result.student.fatherName}
+                  {result?.student?.fatherName}
                 </li>
                 <li>
                   <strong>{`Mother's Name:`}</strong>{" "}
-                  {result.student.motherName}
+                  {result?.student?.motherName}
                 </li>
                 <li>
-                  <strong>Class:</strong> {result.student.class}
+                  <strong>Class:</strong> {result?.student?.class}
                 </li>
                 <li>
-                  <strong>Section:</strong> {result.student.section}
+                  <strong>Section:</strong> {result?.student?.section}
                 </li>
                 <li>
-                  <strong>Session:</strong> {result.student.session}
+                  <strong>Session:</strong> {result?.student?.session}
                 </li>
                 <li>
-                  <strong>Roll No:</strong> {result.student.rollNumber}
+                  <strong>Roll No:</strong> {result?.student?.rollNumber}
                 </li>
                 <li>
-                  <strong>Gender:</strong> {result.student.gender}
+                  <strong>Gender:</strong> {result?.student?.gender}
                 </li>
                 <li>
                   <strong>Date of Birth:</strong>{" "}
-                  {new Date(result.student.dob).toLocaleDateString()}
+                  {new Date(result?.student?.dob).toLocaleDateString()}
                 </li>
                 <li>
-                  <strong>Guardian:</strong> {result.student.guardianName}
+                  <strong>Guardian:</strong> {result?.student?.guardianName}
                 </li>
                 <li>
                   <strong>Guardian Phone:</strong>{" "}
-                  {result.student.guardianPhone}
+                  {result?.student?.guardianPhone}
                 </li>
                 <li>
-                  <strong>Address:</strong> {result.student.address}
+                  <strong>Address:</strong> {result?.student?.address}
                 </li>
               </ul>
 
@@ -210,10 +210,10 @@ const columns: ColumnDef<ResultType>[] = [
                 <tbody>
                   {result.subjects.map((subject: any) => (
                     <tr key={subject._id}>
-                      <td className="border px-2 py-1">{subject.subject}</td>
-                      <td className="border px-2 py-1">{subject.marks}</td>
-                      <td className="border px-2 py-1">{subject.grade}</td>
-                      <td className="border px-2 py-1">{subject.point}</td>
+                      <td className="border px-2 py-1">{subject?.subject}</td>
+                      <td className="border px-2 py-1">{subject?.marks}</td>
+                      <td className="border px-2 py-1">{subject?.grade}</td>
+                      <td className="border px-2 py-1">{subject?.point}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -221,10 +221,10 @@ const columns: ColumnDef<ResultType>[] = [
 
               <div className="pt-4 text-sm">
                 <p>
-                  <strong>GPA:</strong> {result.gpa}
+                  <strong>GPA:</strong> {result?.gpa}
                 </p>
                 <p>
-                  <strong>Overall Grade:</strong> {result.overallGrade}
+                  <strong>Overall Grade:</strong> {result?.overallGrade}
                 </p>
               </div>
             </div>
@@ -301,11 +301,11 @@ function useResultFormFields() {
         label: "Class",
         type: "select",
         options: [
-          { label: "6", value: "6" },
-          { label: "7", value: "7" },
-          { label: "8", value: "8" },
-          { label: "9", value: "9" },
-          { label: "10", value: "10" },
+          { label: "Six", value: "6" },
+          { label: "Seven", value: "7" },
+          { label: "Eight", value: "8" },
+          { label: "Nine", value: "9" },
+          { label: "Ten", value: "10" },
         ],
         value: className,
         onChange: (val: string) => setClassName(val),
@@ -347,8 +347,40 @@ function useResultFormFields() {
             type: "select",
             options: allSubjectsList,
           },
-          { name: "marks", label: "Marks", type: "text" },
-          { name: "comments", label: "Comments", type: "textarea" },
+          {
+            name: "written_score",
+            label: "Written Score",
+            type: "text",
+          },
+          {
+            name: "written_outOf",
+            label: "Written Out Of",
+            type: "select",
+            options: [
+              { label: "100", value: "100" },
+              { label: "70", value: "70" },
+            ],
+          },
+          {
+            name: "mcq_score",
+            label: "MCQ Score",
+            type: "text",
+          },
+          {
+            name: "mcq_outOf",
+            label: "MCQ Out Of",
+            type: "select",
+            options: [
+              { label: "30", value: "30" },
+              { label: "50", value: "50" },
+              { label: "25", value: "25" },
+            ],
+          },
+          {
+            name: "comments",
+            label: "Comments",
+            type: "textarea",
+          },
         ],
         defaultValue: (item: IResult) => item.subjects || [],
       },

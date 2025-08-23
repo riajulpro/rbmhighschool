@@ -1,35 +1,18 @@
 "use client";
 
 import { DataTable } from "@/components/shared/data-table";
-
-interface ExamResult {
-  year: string;
-  exam: string;
-  totalExaminee: number;
-  totalPassed: number;
-  totalFailed: number;
-  totalPassPercentage: number;
-  totalFailPercentage: number;
-  totalPassMale: number;
-  totalPassFemale: number;
-  totalAPlus: number;
-  totalAGrade: number;
-  totalAMinus: number;
-  totalB: number;
-  totalC: number;
-  totalD: number;
-}
+import { IExamResult } from "@/types/exam-results";
 
 const ResultStatisticContainer = ({
   statistics,
 }: {
-  statistics: ExamResult[];
+  statistics: IExamResult[];
 }) => {
   const columns = [
     {
-      key: "year" as keyof ExamResult,
+      key: "year" as keyof IExamResult,
       header: "Year",
-      render: (value: string, row: ExamResult) => (
+      render: (value: string, row: IExamResult) => (
         <span>
           {row.exam} {value}
         </span>
@@ -37,69 +20,69 @@ const ResultStatisticContainer = ({
       sortable: true,
     },
     {
-      key: "totalExaminee" as keyof ExamResult,
+      key: "totalExaminee" as keyof IExamResult,
       header: "Total Examinee",
       sortable: false,
     },
     {
-      key: "totalPassed" as keyof ExamResult,
+      key: "totalPassed" as keyof IExamResult,
       header: "Total Passed",
       sortable: false,
     },
     {
-      key: "totalFailed" as keyof ExamResult,
+      key: "totalFailed" as keyof IExamResult,
       header: "Total Failed",
       sortable: false,
     },
     {
-      key: "totalPassPercentage" as keyof ExamResult,
+      key: "totalPassPercentage" as keyof IExamResult,
       header: "Pass %",
       render: (value: number) => `${value}%`,
       sortable: false,
     },
     {
-      key: "totalFailPercentage" as keyof ExamResult,
+      key: "totalFailPercentage" as keyof IExamResult,
       header: "Fail %",
       render: (value: number) => `${value}%`,
       sortable: false,
     },
     {
-      key: "totalPassMale" as keyof ExamResult,
+      key: "totalPassMale" as keyof IExamResult,
       header: "Passed Male",
       sortable: false,
     },
     {
-      key: "totalPassFemale" as keyof ExamResult,
+      key: "totalPassFemale" as keyof IExamResult,
       header: "Passed Female",
       sortable: false,
     },
     {
-      key: "totalAPlus" as keyof ExamResult,
+      key: "totalAPlus" as keyof IExamResult,
       header: "A+",
       sortable: false,
     },
     {
-      key: "totalAGrade" as keyof ExamResult,
+      key: "totalAGrade" as keyof IExamResult,
       header: "A",
       sortable: false,
     },
     {
-      key: "totalAMinus" as keyof ExamResult,
+      key: "totalAMinus" as keyof IExamResult,
       header: "A-",
       sortable: false,
     },
     {
-      key: "totalB" as keyof ExamResult,
+      key: "totalB" as keyof IExamResult,
       header: "B",
       sortable: false,
     },
     {
-      key: "totalC" as keyof ExamResult,
+      key: "totalC" as keyof IExamResult,
       header: "C",
       sortable: false,
     },
     {
-      key: "totalD" as keyof ExamResult,
+      key: "totalD" as keyof IExamResult,
       header: "D",
       sortable: false,
     },
