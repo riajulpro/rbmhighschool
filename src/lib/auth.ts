@@ -2,10 +2,40 @@
 import { NextAuthOptions, Session, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios, { AxiosError } from "axios";
+import { jwtDecode } from "jwt-decode";
 
 interface CustomUser extends User {
   token?: string;
+  refreshToken?: string;
   role?: string;
+}
+
+interface DecodedToken {
+  exp: number;
+  iat: number;
+  id: string;
+  role: string;
+}
+
+async function refreshAccessToken(token: any) {
+  try {
+    const response = await axios.post(
+      `${process.env.BACKEND_URL}/api/auth/refresh`,
+      { refreshToken: token.refreshToken }
+    );
+
+    const newToken = response.data.token;
+    const decoded = jwtDecode<DecodedToken>(newToken);
+
+    return {
+      ...token,
+      accessToken: newToken,
+      accessTokenExpires: decoded.exp * 1000,
+    };
+  } catch (error) {
+    console.error("Refresh token failed", error);
+    return { ...token, accessToken: null }; // invalidate session
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -27,14 +57,16 @@ export const authOptions: NextAuthOptions = {
           const response = await axios.post<{
             user: CustomUser;
             token: string;
+            refreshToken: string;
           }>(loginPath, {
             email: credentials.email,
             password: credentials.password,
           });
 
-          const { user, token } = response.data;
-          if (user) {
-            return { ...user, token };
+          const { user, token, refreshToken } = response.data;
+
+          if (user && token) {
+            return { ...user, token, refreshToken };
           }
           return null;
         } catch (err) {
@@ -48,26 +80,50 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user }: { token: any; user?: any }) {
-      if (user) {
+      // Initial login
+      if (user?.token) {
         token.accessToken = user.token;
+        token.refreshToken = user.refreshToken;
         token.role = user.role;
+
+        const decoded = jwtDecode<DecodedToken>(user.token);
+        token.accessTokenExpires = decoded.exp * 1000;
+        return token;
       }
-      return token;
+
+      // If token not expired, return it
+      if (Date.now() < (token.accessTokenExpires || 0)) {
+        return token;
+      }
+
+      // Token expired → refresh
+      return await refreshAccessToken(token);
     },
+
     async session({ session, token }: { session: Session; token: any }) {
-      if (session.user) {
-        (session.user as any).accessToken = token.accessToken;
-        (session.user as any).role = token.role;
+      if (!token.accessToken) {
+        // Optionally, you can remove sensitive data or throw an error
+        // For now, just return the session without accessToken and role
+        delete (session.user as any).accessToken;
+        delete (session.user as any).role;
+        return session;
       }
+
+      (session.user as any).accessToken = token.accessToken;
+      (session.user as any).role = token.role;
       return session;
     },
   },
+
   session: {
     strategy: "jwt",
   },
+
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
     signIn: "/sign-in",
   },

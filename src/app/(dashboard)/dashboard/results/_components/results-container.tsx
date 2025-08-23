@@ -2,8 +2,11 @@
 "use client";
 
 import { ResultTable } from "@/components/tables/result-table";
+import { Button } from "@/components/ui/button";
 import axiosInstance from "@/lib/axios";
 import type { IResult } from "@/types/index";
+import { Atom } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function ResultsPage({
@@ -66,11 +69,21 @@ export default function ResultsPage({
 
   return (
     <div className="container mx-auto py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Student Results</h1>
-        <p className="text-muted-foreground">
-          Manage academic results for students by semester and year
-        </p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Student Results</h1>
+          <p className="text-muted-foreground">
+            Manage academic results for students by semester and year
+          </p>
+        </div>
+        <div>
+          <Link href="/dashboard/results/marksheet">
+            <Button className="bg-[var(--primary-color)] cursor-pointer">
+              <Atom />
+              Generate Marksheet
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <ResultTable

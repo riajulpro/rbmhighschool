@@ -28,17 +28,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ResultData } from "@/lib/result-action";
 import { toast } from "sonner";
+import { StudentInfo } from "@/lib/result-action";
+
+interface ResultData {
+  _id: string;
+  student: StudentInfo;
+  semester: "FirstSemester" | "MidTerm" | "Annual";
+  year: number;
+  subjects: {
+    subject: string;
+    marks: {
+      written: {
+        score: number;
+        outOf: number;
+      };
+      mcq: {
+        score: number;
+        outOf: number;
+      };
+    };
+    grade: string;
+    point: number;
+    comments?: string;
+  }[];
+  gpa: number;
+  overallGrade: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export function ResultViewer() {
   const [studentClass, setStudentClass] = useState("");
   const [session, setSession] = useState("");
   const [rollNumber, setRollNumber] = useState("");
   const [semester, setSemester] = useState("");
-
   const [isPending, setIsPending] = useState(false);
-
   const [result, setResult] = useState<ResultData | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -337,17 +362,43 @@ export function ResultViewer() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {result.subjects.map((subject, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">
-                        {subject.subject}
-                      </TableCell>
-                      <TableCell>{subject.marks}</TableCell>
-                      <TableCell>{subject.grade || "N/A"}</TableCell>
-                      <TableCell>{subject.point || "N/A"}</TableCell>
-                      <TableCell>{subject.comments || "N/A"}</TableCell>
-                    </TableRow>
-                  ))}
+                  {result.subjects.map((subject, index) => {
+                    const written = subject.marks?.written;
+                    const mcq = subject.marks?.mcq;
+
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          {subject.subject}
+                        </TableCell>
+                        <TableCell>
+                          {written?.outOf > 0 ? (
+                            <div>
+                              <span>
+                                Written: {written.score}/{written.outOf}
+                              </span>
+                              {mcq?.outOf > 0 && (
+                                <span className="block">
+                                  MCQ: {mcq.score}/{mcq.outOf}
+                                </span>
+                              )}
+                              <span className="block font-semibold mt-1">
+                                Total: {written.score + (mcq?.score || 0)} /
+                                {written.outOf + (mcq?.outOf || 0)}
+                              </span>
+                            </div>
+                          ) : (
+                            "N/A"
+                          )}
+                        </TableCell>
+                        <TableCell>{subject.grade || "N/A"}</TableCell>
+                        <TableCell>
+                          {subject.point?.toFixed(2) || "N/A"}
+                        </TableCell>
+                        <TableCell>{subject.comments || "N/A"}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>

@@ -57,7 +57,7 @@ export type ResultType = {
 
 const columns: ColumnDef<ResultType>[] = [
   {
-    accessorKey: "studentName",
+    accessorKey: "student.studentName",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -67,11 +67,9 @@ const columns: ColumnDef<ResultType>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => {
-      return (
-        <div className="font-medium">{row?.original?.student?.studentName}</div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="font-medium">{row.original?.student?.studentName}</div>
+    ),
   },
   {
     accessorKey: "semester",
@@ -152,6 +150,7 @@ const columns: ColumnDef<ResultType>[] = [
               </DialogDescription>
             </DialogHeader>
 
+            {/* Student Info */}
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Student Information</h3>
               <ul className="grid grid-cols-2 gap-4 text-sm">
@@ -197,25 +196,42 @@ const columns: ColumnDef<ResultType>[] = [
                 </li>
               </ul>
 
+              {/* Subject Results */}
               <h3 className="text-lg font-semibold pt-4">Subject Results</h3>
               <table className="w-full text-sm border">
                 <thead>
                   <tr className="bg-gray-100 text-left">
                     <th className="border px-2 py-1">Subject</th>
-                    <th className="border px-2 py-1">Marks</th>
+                    <th className="border px-2 py-1">Written</th>
+                    <th className="border px-2 py-1">MCQ</th>
+                    <th className="border px-2 py-1">Total</th>
                     <th className="border px-2 py-1">Grade</th>
                     <th className="border px-2 py-1">Point</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {result.subjects.map((subject: any) => (
-                    <tr key={subject._id}>
-                      <td className="border px-2 py-1">{subject?.subject}</td>
-                      <td className="border px-2 py-1">{subject?.marks}</td>
-                      <td className="border px-2 py-1">{subject?.grade}</td>
-                      <td className="border px-2 py-1">{subject?.point}</td>
-                    </tr>
-                  ))}
+                  {result.subjects.map((subject: any) => {
+                    const written = subject?.marks?.written;
+                    const mcq = subject?.marks?.mcq;
+                    return (
+                      <tr key={subject._id}>
+                        <td className="border px-2 py-1">{subject?.subject}</td>
+                        <td className="border px-2 py-1">
+                          {written?.score} / {written?.outOf}
+                        </td>
+                        <td className="border px-2 py-1">
+                          {mcq?.outOf > 0
+                            ? `${mcq?.score} / ${mcq?.outOf}`
+                            : "-"}
+                        </td>
+                        <td className="border px-2 py-1">
+                          {subject?.marks?.total}
+                        </td>
+                        <td className="border px-2 py-1">{subject?.grade}</td>
+                        <td className="border px-2 py-1">{subject?.point}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
 
