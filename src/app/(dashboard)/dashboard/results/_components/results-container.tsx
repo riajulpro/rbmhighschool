@@ -16,10 +16,7 @@ export default function ResultsPage({
 }) {
   const router = useRouter();
 
-  const handleAdd = async (
-    // result: Omit<IResult, "_id" | "createdAt" | "updatedAt">
-    result: any
-  ) => {
+  const handleAdd = async (result: any) => {
     const subjects = result.subjects.map((sub: any) => {
       return {
         subject: sub.subject,
@@ -51,8 +48,41 @@ export default function ResultsPage({
     }
   };
 
-  const handleEdit = async (id: string, updatedResult: Partial<IResult>) => {
-    const res = await axiosInstance.put(`/api/results/${id}`, updatedResult);
+  const handleEdit = async (id: string, updatedResult: any) => {
+    // Transform the form data to match the API format
+    const subjects = updatedResult.subjects?.map((sub: any) => {
+      return {
+        subject: sub.subject,
+        marks: {
+          written: {
+            score: Number(sub.written_score),
+            outOf: Number(sub.written_outOf),
+          },
+          mcq: {
+            score: Number(sub.mcq_score || "0"),
+            outOf: Number(sub.mcq_outOf || "0"),
+          },
+        },
+        comments: sub.comments || "",
+      };
+    });
+
+    const payload: any = {
+      semester: updatedResult.semester,
+      year: Number(updatedResult.session),
+    };
+
+    // Only include subjects if they exist
+    if (subjects && subjects.length > 0) {
+      payload.subjects = subjects;
+    }
+
+    // Only include student if it exists and is different
+    if (updatedResult.studentId) {
+      payload.student = updatedResult.studentId;
+    }
+
+    const res = await axiosInstance.put(`/api/results/${id}`, payload);
 
     if (res.status === 200) {
       router.refresh();

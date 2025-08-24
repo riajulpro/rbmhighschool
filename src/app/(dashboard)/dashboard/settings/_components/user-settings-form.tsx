@@ -102,6 +102,7 @@ export default function UserSettingsForm() {
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="personal-info">Personal Info</TabsTrigger>
             <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="teacher">{`Teacher's Profile`}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="personal-info" className="mt-6 space-y-6">
@@ -169,6 +170,10 @@ export default function UserSettingsForm() {
                 <Button type="submit">Change Password</Button>
               </div>
             </form>
+          </TabsContent>
+
+          <TabsContent value="teacher" className="mt-6 space-y-6">
+            Only teachers can access this section.
           </TabsContent>
         </Tabs>
       </CardContent>

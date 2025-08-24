@@ -329,6 +329,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 align="end"
                 sideOffset={4}
               >
+                {session?.user?.role === "teacher" && (
+                  <Link href="/dashboard/settings/teacher-profile">
+                    <DropdownMenuItem>
+                      <User2 />
+                      Teacher Designation
+                    </DropdownMenuItem>
+                  </Link>
+                )}
                 <Link href="/dashboard/settings">
                   <DropdownMenuItem>
                     <Settings />

@@ -275,11 +275,6 @@ function useResultFormFields() {
             value: s._id,
           }));
 
-          const nameMap: Record<string, string> = {};
-          data.students.forEach((s: any) => {
-            nameMap[s._id] = s.studentName;
-          });
-
           setStudents(options);
           setSelectedStudentId("");
         } catch (error) {
@@ -311,6 +306,7 @@ function useResultFormFields() {
         ],
         value: session,
         onChange: (val: string) => setSession(val),
+        defaultValue: (item: IResult) => item.year?.toString() || "2025",
       },
       {
         name: "class",
@@ -325,6 +321,7 @@ function useResultFormFields() {
         ],
         value: className,
         onChange: (val: string) => setClassName(val),
+        defaultValue: (item: IResult) => (item as any).student?.class || "10",
       },
       {
         name: "studentId",
@@ -340,6 +337,7 @@ function useResultFormFields() {
         value: selectedStudentId,
         onChange: (val: string) => setSelectedStudentId(val),
         key: students.length,
+        defaultValue: (item: IResult) => (item as any).student?._id || "",
       },
       {
         name: "semester",
@@ -351,6 +349,7 @@ function useResultFormFields() {
           { value: "MidTerm", label: "Mid Term" },
           { value: "Annual", label: "Annual" },
         ],
+        defaultValue: (item: IResult) => item.semester || "FirstSemester",
       },
       {
         name: "subjects",
@@ -398,7 +397,18 @@ function useResultFormFields() {
             type: "textarea",
           },
         ],
-        defaultValue: (item: IResult) => item.subjects || [],
+        // Transform nested marks structure to flat form structure
+        defaultValue: (item: IResult) => {
+          if (!item.subjects) return [];
+          return item.subjects.map((subject: any) => ({
+            subject: subject.subject,
+            written_score: subject.marks?.written?.score?.toString() || "",
+            written_outOf: subject.marks?.written?.outOf?.toString() || "100",
+            mcq_score: subject.marks?.mcq?.score?.toString() || "",
+            mcq_outOf: subject.marks?.mcq?.outOf?.toString() || "30",
+            comments: subject.comments || "",
+          }));
+        },
       },
     ],
     [className, loading, selectedStudentId, session, students]
